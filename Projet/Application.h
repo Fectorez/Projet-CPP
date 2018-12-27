@@ -22,7 +22,6 @@ class Application
 		sf::RenderWindow m_window;
 		Player m_player;
 		Enemy m_enemy;
-		AnimatedObject m_coin;
-		Platform m_platform;
+		std::vector<Platform*> m_platforms;
 };
 

@@ -10,8 +10,8 @@
 #define PCH_H
 
 #define TITLE "Donkey Kong"
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 640
+#define WINDOW_WIDTH 448
+#define WINDOW_HEIGHT 448
 #define TIME_PER_FRAME (1.f / 60.f)
 #define PLAYER_SPEED 1
 #define TEXTURE_SIZE 32
@@ -20,9 +20,12 @@
 #define ENEMY_TEXTURE_FILE "goomba_sprite.png"
 #define COIN_TEXTURE_FILE "coin_sprite.png"
 #define PLATFORM_TEXTURE_FILE "platform.png"
+#define PLATFORM_SIZE_X 32
+#define PLATFORM_SIZE_Y 16
 
-enum class JumpState { Up, Down, None };
+enum class Gravity { Up, Down, None };
 enum class Direction { Left = -1, Right = 1 };
+enum class Position { Top, Bottom, None };
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
