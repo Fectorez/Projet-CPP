@@ -10,7 +10,7 @@ namespace PhysicsManager
 		return rect1.intersects(rect2);
 	}
 
-	bool PhysicsManager::collide(Player & player, PlatformPart * ppart)
+	bool PhysicsManager::collide(Player & player, SimpleObject * ppart)
 	{
 		sf::Sprite s1 = ppart->getSprite();
 		sf::Sprite s2 = player.getSprite();
@@ -24,7 +24,7 @@ namespace PhysicsManager
 		bool climbsLeft = player.getDirection() == Direction::Left && player.getPlatform()->getDirection() == Direction::Left;
 		bool climbsRight = player.getDirection() == Direction::Right && player.getPlatform()->getDirection() == Direction::Right;
 		if ( climbsLeft || climbsRight )
-			for ( PlatformPart* ppart : player.getPlatform()->getParts() )
+			for ( SimpleObject* ppart : player.getPlatform()->getParts() )
 				if ( collide(player, ppart) )
 					player.setY(ppart->y() - player.getSize().y );
 	}
@@ -43,7 +43,7 @@ namespace PhysicsManager
 			player.makeFall();
 			return;
 		}
-		for ( PlatformPart* ppart : player.getPlatform()->getParts() )
+		for ( SimpleObject* ppart : player.getPlatform()->getParts() )
 		{
 			bool ownPPart = descendsRight && player.x() >= ppart->x() && player.xRight() <= ppart->xRight();
 			ownPPart = ownPPart || descendsLeft && player.xRight() <= ppart->xRight() && player.x() >= ppart->x();
@@ -52,9 +52,10 @@ namespace PhysicsManager
 		}
 	}
 
+	// à modifier
 	void PhysicsManager::manageMarioJump(Player & player, Platform & platform)
 	{
-		std::vector<PlatformPart*> pparts = platform.getParts();
+		std::vector<SimpleObject*> pparts = platform.getParts();
 		for ( SimpleObject* const& ppart : pparts )
 		{
 			if ( Collision::BoundingBoxTest(player.getSprite(), ppart->getSprite()) )
@@ -66,7 +67,7 @@ namespace PhysicsManager
 					player.setPosition(pos.x,ppart->getPosition().y+TEXTURE_SIZE+1);
 					player.makeFall();
 				}
-				else if ( player.isGoingDown() )
+				else if ( player.isFalling() )
 				{
 					std::cout << "down" << std::endl;
 					player.setPosition(pos.x,ppart->getPosition().y-TEXTURE_SIZE-1);
@@ -86,5 +87,19 @@ namespace PhysicsManager
 				}
 			}
 		}
+	}
+	void PhysicsManager::manageMarioFall(Player & player, std::vector<Platform*> platforms)
+	{
+		if ( !player.isFalling() )
+			return;
+		for ( auto platform : platforms )
+			for ( auto pPart : platform->getParts() )
+				if ( collide(player, pPart) && player.yBottom() <= pPart->yBottom() )
+				{
+					player.setPlatform(platform);
+					player.stopFall();
+					player.setY(pPart->y()-player.height());
+					return;
+				}
 	}
 }

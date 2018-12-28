@@ -71,6 +71,16 @@ sf::Vector2i SimpleObject::getSize() const
 	return sf::Vector2i(rect.width,rect.height);
 }
 
+float SimpleObject::width() const
+{
+	return getSize().x;
+}
+
+float SimpleObject::height() const
+{
+	return getSize().y;
+}
+
 sf::Sprite SimpleObject::getSprite() const
 {
 	return m_sprite;

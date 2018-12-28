@@ -87,6 +87,7 @@ void Application::update()
 	//PhysicsManager::manageMarioJump(m_player, m_platform);
 	PhysicsManager::manageMarioClimb(m_player);
 	PhysicsManager::manageMarioDescent(m_player);
+	PhysicsManager::manageMarioFall(m_player, m_platforms);
 }
 
 void Application::render()

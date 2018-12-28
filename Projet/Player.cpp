@@ -4,7 +4,7 @@
 const float Player::MAX_JUMP_SPEED = 10.f;
 
 Player::Player(std::string textureFile) :
-	Character(textureFile, Direction::Right, 1, false, { 0,2 }, { 3,3 }),
+	Character(textureFile, Direction::Right, PLAYER_SPEED, false, { 0,2 }, { 3,3 }),
 	m_platform(nullptr)
 {}
 
@@ -32,8 +32,8 @@ void Player::update()
 		/*if ( m_sprite.getPosition().y >= 200 )
 		{
 			m_jumpState = JumpState::None;
-			m_jumpSpeed = MAX_JUMP_SPEED;
-		}*/
+			m_jumpSpeed = MAX_JUMP_SPEED;*/
+		
 	}
 	Character::update();
 }
@@ -49,7 +49,7 @@ bool Player::isGoingUp() const
 	return m_gravityState == Gravity::Up;
 }
 
-bool Player::isGoingDown() const
+bool Player::isFalling() const
 {
 	return m_gravityState == Gravity::Down;
 }
@@ -61,6 +61,7 @@ void Player::makeFall()
 		m_gravityState = Gravity::Down;
 		m_platform = nullptr;
 		m_jumpSpeed = 0;
+		std::cout << "falllllllllllllll" << std::endl;
 	}
 }
 

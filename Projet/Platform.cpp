@@ -14,7 +14,7 @@ Platform::Platform(sf::Vector2i extremity, Direction direction, Position positio
 		m_xLeft = x;
 	while ( x >= 0 && x < WINDOW_HEIGHT )
 	{
-		PlatformPart* part = new PlatformPart();
+		SimpleObject* part = new SimpleObject(PLATFORM_TEXTURE_FILE);
 		part->setPosition(x,y);
 		m_parts.push_back(part);
 		if ( position == Position::None || position == Position::Bottom && x >= WINDOW_WIDTH*0.4 || position == Position::Top && x > WINDOW_WIDTH/2 )
@@ -32,13 +32,13 @@ Platform::Platform(sf::Vector2i extremity, Direction direction, Position positio
 
 Platform::~Platform()
 {
-	for ( PlatformPart* const& ppart : m_parts )
+	for ( SimpleObject* const& ppart : m_parts )
 		delete ppart;
 }
 
 void Platform::draw(sf::RenderWindow & window)
 {
-	for ( PlatformPart *part : m_parts )
+	for ( SimpleObject *part : m_parts )
 		part->draw(window);
 }
 
@@ -46,7 +46,7 @@ void Platform::update()
 {
 }
 
-std::vector<PlatformPart*> Platform::getParts() const
+std::vector<SimpleObject*> Platform::getParts() const
 {
 	return m_parts;
 }

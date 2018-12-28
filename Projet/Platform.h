@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PlatformPart.h"
+#include "SimpleObject.h"
 
 class Platform : public Entity
 {
@@ -9,13 +9,13 @@ public:
 	~Platform();
 	void draw(sf::RenderWindow& window);
 	void update();
-	std::vector<PlatformPart*> getParts() const;
+	std::vector<SimpleObject*> getParts() const;
 	Direction getDirection() const;
 	float xLeft() const;
 	float xRight() const;
 
 private:
-	std::vector<PlatformPart*> m_parts;
+	std::vector<SimpleObject*> m_parts;
 	Direction m_direction; // vers le haut
 	float m_xLeft;
 	float m_xRight;

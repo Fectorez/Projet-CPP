@@ -11,7 +11,7 @@ public:
 	void update();
 	void setJumping();
 	bool isGoingUp() const;
-	bool isGoingDown() const;
+	bool isFalling() const;
 	void makeFall();
 	void stopFall();
 	Platform* getPlatform() const;

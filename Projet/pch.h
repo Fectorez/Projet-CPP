@@ -13,7 +13,7 @@
 #define WINDOW_WIDTH 448
 #define WINDOW_HEIGHT 448
 #define TIME_PER_FRAME (1.f / 60.f)
-#define PLAYER_SPEED 1
+#define PLAYER_SPEED 3
 #define TEXTURE_SIZE 32
 #define TIME_PER_ANIM (1.f / 15.f)
 #define MARIO_TEXTURE_FILE "mario_sprite.png"

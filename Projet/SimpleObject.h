@@ -18,9 +18,11 @@ public:
 	void setX(float x);
 	void setY(float y);
 	sf::Vector2i getSize() const;
+	float width() const;
+	float height() const;
 	sf::Sprite getSprite() const;
 
-	virtual void update() = 0;
+	virtual void update() {}
 
 protected:
 	sf::Texture m_texture;
