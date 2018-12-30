@@ -17,10 +17,14 @@ public:
 	void setPosition(float x, float y);
 	void setX(float x);
 	void setY(float y);
+	void setXRight(float x);
+	void setYBottom(float y);
 	sf::Vector2i getSize() const;
 	float width() const;
 	float height() const;
 	sf::Sprite getSprite() const;
+	void moveX(float x);
+	void moveY(float y);
 
 	virtual void update() {}
 

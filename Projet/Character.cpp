@@ -2,10 +2,8 @@
 #include "Character.h"
 #include <iostream>
 
-
-
-Character::Character(std::string textureFile, Direction direction, int speed, bool moving, sf::Vector2i firstAnim, sf::Vector2i nbAnim, sf::Vector2i spriteSize) :
-	AnimatedObject(textureFile, firstAnim,nbAnim,spriteSize),
+Character::Character(std::string textureFile, Direction direction, float speed, sf::Vector2i spriteSize, bool moving) :
+	AnimatedObject(textureFile, spriteSize),
 	m_direction(direction),
 	m_speed(speed),
 	m_moving(moving)
@@ -24,7 +22,11 @@ Direction Character::getDirection() const
 
 void Character::setDirection(Direction direction)
 {
-	m_direction = direction;
+	if ( m_direction != direction )
+	{
+		m_direction = direction;
+		setAnim();
+	}
 }
 
 bool Character::isMoving() const
@@ -37,21 +39,39 @@ void Character::setMoving(bool moving)
 	m_moving = moving;
 }
 
+void Character::moveX(float x)
+{
+	m_sprite.move(x, 0.f);
+}
+
+void Character::moveY(float y)
+{
+	m_sprite.move(0.f, y);
+}
+
 void Character::update()
 {
 	if ( m_moving )
-		m_sprite.move(float(m_speed*(int)m_direction), 0.f);
+	{
+		if ( m_direction == Direction::Left )
+		{
+			moveX(-m_speed);
+			if ( x() < 0 )
+				setX(0);
+		}
+		else if ( m_direction == Direction::Right )
+		{
+			moveX(m_speed);
+			if ( xRight() > WINDOW_WIDTH )
+				setXRight(WINDOW_WIDTH);
+		}
+	}
 	AnimatedObject::update();
 }
 
 void Character::updateSprite()
 {
-	if ( m_moving )
-	{
-		m_anim.y = (m_direction == Direction::Left ? 1 : 2);
-		m_anim.x++;
-	}
-	if ( m_anim.x == m_nbAnim.x || !m_moving )
+	if ( !m_moving || ++m_anim.x == m_anim.nb )
 		m_anim.x = 0;
-	AnimatedObject::setTextureAnim();
+	setTextureAnim();
 }

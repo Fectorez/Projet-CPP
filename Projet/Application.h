@@ -1,8 +1,8 @@
 #pragma once
 #include "SimpleObject.h"
 #include "Player.h"
-#include "Enemy.h"
 #include "Platform.h"
+#include "Ladder.h"
 
 class Application
 {
@@ -21,7 +21,7 @@ class Application
 		static const sf::Time TimePerFrame;
 		sf::RenderWindow m_window;
 		Player m_player;
-		Enemy m_enemy;
 		std::vector<Platform*> m_platforms;
+		std::vector<Ladder*> m_ladders;
 };
 

@@ -13,19 +13,41 @@
 #define WINDOW_WIDTH 448
 #define WINDOW_HEIGHT 448
 #define TIME_PER_FRAME (1.f / 60.f)
-#define PLAYER_SPEED 3
+#define PLAYER_SPEED 1
 #define TEXTURE_SIZE 32
 #define TIME_PER_ANIM (1.f / 15.f)
-#define MARIO_TEXTURE_FILE "mario_sprite.png"
+#define MARIO_TEXTURE_FILE "mario_sprite6.png"
 #define ENEMY_TEXTURE_FILE "goomba_sprite.png"
 #define COIN_TEXTURE_FILE "coin_sprite.png"
 #define PLATFORM_TEXTURE_FILE "platform.png"
+#define LADDER_TEXTURE_FILE "ladder.png"
 #define PLATFORM_SIZE_X 32
 #define PLATFORM_SIZE_Y 16
+#define MARIO_SIZE_X 16
+#define MARIO_SIZE_Y 31
 
 enum class Gravity { Up, Down, None };
-enum class Direction { Left = -1, Right = 1 };
-enum class Position { Top, Bottom, None };
+enum class Direction { Left, Right, Up, Down };
+enum class Position { Top, Bottom, None, Peach };
+
+struct Anim
+{
+	int x;
+	int y;
+	int nb;
+};
+const Anim ANIM_LEFT{ 0,1,3 };
+const Anim ANIM_RIGHT{ 0,2,3 };
+const Anim ANIM_LADDER{ 0,3,2 };
+const Anim ANIM_JUMP_LEFT{ 0,0,1 };
+const Anim ANIM_JUMP_RIGHT{ 0,4,1 };
+
+#define ANIM_LEFT_Y 1
+#define ANIM_RIGHT_Y 2
+#define ANIM_CLIMBING_LADDER_Y 3
+#define ANIM_LEFT_NB 3
+#define ANIM_RIGHT_NB 3
+#define ANIM_CLIMBING_LADDER_NB 2
 
 #include <SFML/Graphics.hpp>
 #include <iostream>

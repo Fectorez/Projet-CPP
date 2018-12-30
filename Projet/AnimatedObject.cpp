@@ -3,11 +3,10 @@
 
 const sf::Time AnimatedObject::TimePerAnim = sf::seconds(TIME_PER_ANIM);
 
-AnimatedObject::AnimatedObject(std::string textureFile, sf::Vector2i firstAnim, sf::Vector2i nbAnim, sf::Vector2i spriteSize):
+AnimatedObject::AnimatedObject(std::string textureFile, sf::Vector2i spriteSize, Anim anim):
 	SimpleObject(textureFile),
-	m_anim(firstAnim),
-	m_nbAnim(nbAnim),
 	m_spriteSize(spriteSize),
+	m_anim(anim),
 	m_clock()
 {
 	setTextureAnim();
@@ -29,8 +28,7 @@ void AnimatedObject::update()
 
 void AnimatedObject::updateSprite()
 {
-	m_anim.x++;
-	if ( m_anim.x == m_nbAnim.x )
+	if ( ++m_anim.x == m_anim.nb )
 		m_anim.x = 0;
 	setTextureAnim();
 }

@@ -5,7 +5,7 @@
 class Platform : public Entity
 {
 public:
-	Platform(sf::Vector2i extremity, Direction direction, Position position = Position::None);
+	Platform(sf::Vector2f extremity, Direction direction, Position position = Position::None);
 	~Platform();
 	void draw(sf::RenderWindow& window);
 	void update();

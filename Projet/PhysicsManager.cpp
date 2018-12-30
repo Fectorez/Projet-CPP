@@ -10,10 +10,10 @@ namespace PhysicsManager
 		return rect1.intersects(rect2);
 	}
 
-	bool PhysicsManager::collide(Player & player, SimpleObject * ppart)
+	bool PhysicsManager::collide(Player & player, SimpleObject * obj2)
 	{
-		sf::Sprite s1 = ppart->getSprite();
-		sf::Sprite s2 = player.getSprite();
+		sf::Sprite s1 = player.getSprite();
+		sf::Sprite s2 = obj2->getSprite();
 		return collide(s1,s2);
 	}
 
@@ -94,12 +94,71 @@ namespace PhysicsManager
 			return;
 		for ( auto platform : platforms )
 			for ( auto pPart : platform->getParts() )
-				if ( collide(player, pPart) && player.yBottom() <= pPart->yBottom() )
+				if ( collide(player, pPart) && player.yBottom() <= pPart->yBottom() && pPart->y() - player.height() > player.getMaxJump() )
 				{
+					player.resetMaxJump();
 					player.setPlatform(platform);
 					player.stopFall();
 					player.setY(pPart->y()-player.height());
 					return;
 				}
+	}
+
+	void playerDoesntMove(Player & player)
+	{
+		player.setMoving(false);
+	}
+
+	void playerTriesToGoLeft(Player & player)
+	{
+		if ( player.getDirection() != Direction::Up && player.getDirection() != Direction::Down )
+		{
+			player.setDirection(Direction::Left);
+			player.setMoving(true);
+		}
+	}
+
+	void playerTriesToGoRight(Player & player)
+	{
+		if ( player.getDirection() != Direction::Up && player.getDirection() != Direction::Down )
+		{
+			player.setDirection(Direction::Right);
+			player.setMoving(true);
+		}
+	}
+
+	void PhysicsManager::playerTriesToClimbLadder(Player& player, std::vector<Ladder*> ladders)
+	{
+		if ( player.getLadder() != nullptr )
+		{
+			player.setDirection(Direction::Up);
+			player.setMoving(true);
+		}
+		else
+		{
+			for ( Ladder* ladder : ladders )
+				if ( collide(player, ladder) )
+					player.setClimbingLadder(ladder,Direction::Up);
+		}
+	}
+	void playerTriesToClimbOffLadder(Player & player, std::vector<Ladder*> ladders)
+	{
+		if ( player.getLadder() == nullptr )
+		{
+			for ( Ladder* ladder : ladders )
+			{
+				if ( player.x() >= ladder->x() && player.x() <= ladder->xRight() || player.xRight() >= ladder->x() && player.xRight() <= ladder->xRight() )
+					if ( player.yBottom() == ladder->y() )
+					{
+						player.setClimbingLadder(ladder, Direction::Down);
+						return;
+					}
+			}
+		}
+		else
+		{
+			player.setDirection(Direction::Down);
+			player.setMoving(true);
+		}
 	}
 }

@@ -10,7 +10,6 @@ SimpleObject::SimpleObject(std::string textureFile)
 		std::cerr << "Erreur chargement texture" << std::endl;
 		exit(1);
 	}
-	m_texture.setSmooth(true);
 	m_sprite.setTexture(m_texture);
 }
 
@@ -65,6 +64,16 @@ void SimpleObject::setY(float y)
 	m_sprite.setPosition(m_sprite.getPosition().x, y);
 }
 
+void SimpleObject::setXRight(float x)
+{
+	setX(x+-width());
+}
+
+void SimpleObject::setYBottom(float y)
+{
+	setY(y-height());
+}
+
 sf::Vector2i SimpleObject::getSize() const
 {
 	sf::IntRect rect = m_sprite.getTextureRect();
@@ -84,4 +93,14 @@ float SimpleObject::height() const
 sf::Sprite SimpleObject::getSprite() const
 {
 	return m_sprite;
+}
+
+void SimpleObject::moveX(float x)
+{
+	m_sprite.move(x, 0);
+}
+
+void SimpleObject::moveY(float y)
+{
+	m_sprite.move(0, y);
 }

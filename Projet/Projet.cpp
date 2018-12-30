@@ -1,6 +1,5 @@
 #include "pch.h"
 #include <iostream>
-#include "Game.h"
 #include "Application.h"
 
 int main()

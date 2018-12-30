@@ -2,7 +2,7 @@
 #include "Platform.h"
 
 
-Platform::Platform(sf::Vector2i extremity, Direction direction, Position position):
+Platform::Platform(sf::Vector2f extremity, Direction direction, Position position):
 	m_direction(direction)
 {
 	m_parts = {};
@@ -12,7 +12,7 @@ Platform::Platform(sf::Vector2i extremity, Direction direction, Position positio
 		m_xRight = x + PLATFORM_SIZE_X;
 	else
 		m_xLeft = x;
-	while ( x >= 0 && x < WINDOW_HEIGHT )
+	while ( position != Position::Peach &&  x >= 0 && x < WINDOW_HEIGHT || position == Position::Peach && x < extremity.x + PLATFORM_SIZE_X*3 )
 	{
 		SimpleObject* part = new SimpleObject(PLATFORM_TEXTURE_FILE);
 		part->setPosition(x,y);
