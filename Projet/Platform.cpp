@@ -12,12 +12,13 @@ Platform::Platform(sf::Vector2f extremity, Direction direction, Position positio
 		m_xRight = x + PLATFORM_SIZE_X;
 	else
 		m_xLeft = x;
+	m_yBottom = y + PLATFORM_SIZE_Y;
 	while ( position != Position::Peach &&  x >= 0 && x < WINDOW_HEIGHT || position == Position::Peach && x < extremity.x + PLATFORM_SIZE_X*3 )
 	{
 		SimpleObject* part = new SimpleObject(PLATFORM_TEXTURE_FILE);
 		part->setPosition(x,y);
 		m_parts.push_back(part);
-		if ( position == Position::None || position == Position::Bottom && x >= WINDOW_WIDTH*0.4 || position == Position::Top && x > WINDOW_WIDTH/2 )
+		if ( position == Position::None || position == Position::Bottom && x >= WINDOW_WIDTH*0.4 || position == Position::Top && x >= WINDOW_WIDTH - PLATFORM_SIZE_X * 5 )
 			y -= 1.5;
 		if ( direction == Direction::Left )
 			x -= PLATFORM_SIZE_X;
@@ -28,6 +29,7 @@ Platform::Platform(sf::Vector2f extremity, Direction direction, Position positio
 		m_xLeft = x + PLATFORM_SIZE_X;
 	else
 		m_xRight = x - PLATFORM_SIZE_Y;
+	m_yTop = y + 1.5;
 }
 
 Platform::~Platform()
@@ -64,4 +66,14 @@ float Platform::xLeft() const
 float Platform::xRight() const
 {
 	return m_xRight;
+}
+
+float Platform::yTop() const
+{
+	return m_yTop;
+}
+
+float Platform::yBottom() const
+{
+	return m_yBottom;
 }

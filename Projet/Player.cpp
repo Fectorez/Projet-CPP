@@ -5,7 +5,7 @@
 const float Player::MAX_JUMP_SPEED = 2.8f;
 
 Player::Player(std::string textureFile) :
-	Character(textureFile, Direction::Right, PLAYER_SPEED, { MARIO_SIZE_X, MARIO_SIZE_Y })
+	Character(textureFile, Direction::Right, PLAYER_SPEED, MARIO_SIZE)
 {
 	resetMaxJump();
 	setAnim();
@@ -88,16 +88,6 @@ void Player::stopFall()
 	m_jumpSpeed = MAX_JUMP_SPEED;
 }
 
-Platform * Player::getPlatform() const
-{
-	return m_platform;
-}
-
-void Player::setPlatform(Platform * platform)
-{
-	m_platform = platform;
-}
-
 Ladder * Player::getLadder() const
 {
 	return m_ladder;
@@ -106,11 +96,6 @@ Ladder * Player::getLadder() const
 void Player::setLadder(Ladder * ladder)
 {
 	m_ladder = ladder;
-}
-
-Gravity Player::getGravityState() const
-{
-	return m_gravityState;
 }
 
 float Player::getMaxJump() const
@@ -126,6 +111,7 @@ void Player::resetMaxJump()
 void Player::setClimbingLadder(Ladder* ladder, Direction direction)
 {
 	m_ladder = ladder;
+	m_platform = nullptr;
 	setDirection(direction);
 }
 
@@ -150,7 +136,7 @@ void Player::setAnim()
 void Player::climbUpLadder()
 {
 	moveY(-m_speed);
-	if ( !PhysicsManager::collide(*this, m_ladder) )
+	if ( !PhysicsManager::collide(this, m_ladder) )
 		stopClimbLadder();
 }
 

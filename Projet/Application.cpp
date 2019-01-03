@@ -7,7 +7,9 @@ const sf::Time Application::TimePerFrame = sf::seconds(TIME_PER_FRAME);
 
 Application::Application() :
 	m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), TITLE),
-	m_player(MARIO_TEXTURE_FILE)
+	m_player(MARIO_TEXTURE_FILE),
+	m_barrelsStack(BARRELS_STACK_TEXTURE_FILE),
+	m_donkeyKong()
 {
 	// TMP //
 	Platform* firstPlatform = new Platform({ 0, WINDOW_HEIGHT - PLATFORM_SIZE_Y }, Direction::Right, Position::Bottom);
@@ -17,8 +19,8 @@ Application::Application() :
 	m_platforms.push_back(new Platform({ WINDOW_WIDTH - PLATFORM_SIZE_X*2, (int)(WINDOW_HEIGHT*(4.f / 7.f)) },  Direction::Left));
 	m_platforms.push_back(new Platform({ PLATFORM_SIZE_X,                  (int)(WINDOW_HEIGHT*(3.f / 7.f)) },  Direction::Right));
 	m_platforms.push_back(new Platform({ WINDOW_WIDTH - PLATFORM_SIZE_X * 2, (int)(WINDOW_HEIGHT*(2.f / 7.f)) }, Direction::Left, Position::Top));
-	m_platforms.push_back(new Platform({ WINDOW_WIDTH / 2 - PLATFORM_SIZE_X * 2.5, (int)(WINDOW_HEIGHT*(1.f / 7.f)) }, Direction::Right, Position::Peach));
-	m_platforms.push_back(new Platform({ WINDOW_WIDTH / 2 - PLATFORM_SIZE_X * 4, -PLATFORM_SIZE_Y }, Direction::Right, Position::Peach));
+	m_platforms.push_back(new Platform({ m_platforms[5]->getParts()[7]->x()+PLATFORM_SIZE_X/2, (int)(WINDOW_HEIGHT*(1.f / 7.f)) }, Direction::Right, Position::Peach));
+	m_platforms.push_back(new Platform({ m_platforms[6]->xLeft()-48, -PLATFORM_SIZE_Y }, Direction::Right, Position::Peach));
 	m_player.setPlatform(m_platforms[0]);
 	sf::Vector2f firstPPartPos = firstPlatform->getParts()[0]->getPosition();
 	m_player.setPosition(firstPPartPos.x, firstPPartPos.y - 32);
@@ -45,6 +47,10 @@ Application::Application() :
 	m_ladders[9]->build(m_platforms[7]->getParts()[1], m_platforms[5]->getParts()[4], Direction::Left);
 	m_ladders.push_back(new Ladder());
 	m_ladders[10]->build(m_platforms[7]->getParts()[0], m_platforms[5]->getParts()[3], Direction::Left);
+	m_barrelsStack.setPosition(0, m_platforms[5]->yTop()-64);
+	m_donkeyKong.setPosition(40, m_platforms[5]->yTop() - 64);
+
+	m_manager.addAll(&m_player,&m_ladders,&m_platforms,&m_barrels);
 }
 
 
@@ -89,15 +95,15 @@ void Application::processEvents()
 void Application::processPlayerInputs()
 {
 	if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Left) )
-		PhysicsManager::playerTriesToGoLeft(m_player);
+		m_manager.playerTriesToGoLeft();
 	else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Right) )
-		PhysicsManager::playerTriesToGoRight(m_player);
+		m_manager.playerTriesToGoRight();
 	else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Up) )
-		PhysicsManager::playerTriesToClimbLadder(m_player, m_ladders);
+		m_manager.playerTriesToClimbLadder();
 	else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Down) )
-		PhysicsManager::playerTriesToClimbOffLadder(m_player, m_ladders);
+		m_manager.playerTriesToClimbOffLadder();
 	else
-		PhysicsManager::playerDoesntMove(m_player);
+		m_manager.playerDoesntMove();
 	if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Space) )
 		m_player.setJumping();
 }
@@ -106,11 +112,17 @@ void Application::update()
 {
 	for ( Platform* platform : m_platforms )
 		platform->update();
+	for ( Barrel* barrel : m_barrels )
+		barrel->update();
 	m_player.update();
+	m_donkeyKong.update();
+	if ( m_donkeyKong.placesBarrel() )
+		createNewBarrel();
 	//PhysicsManager::manageMarioJump(m_player, m_platform);
-	PhysicsManager::manageMarioClimb(m_player);
-	PhysicsManager::manageMarioDescent(m_player);
-	PhysicsManager::manageMarioFall(m_player, m_platforms);
+	m_manager.manageMarioClimb();
+	m_manager.manageMarioDescent();
+	m_manager.manageBarrelsDescent();
+	m_manager.manageMarioFall();
 }
 
 void Application::render()
@@ -120,6 +132,18 @@ void Application::render()
 		ladder->draw(m_window);
 	for ( Platform* platform : m_platforms )
 		platform->draw(m_window);
+	for ( Barrel* barrel : m_barrels )
+		barrel->draw(m_window);
+	m_barrelsStack.draw(m_window);
+	m_donkeyKong.draw(m_window);
 	m_player.draw(m_window);
 	m_window.display();
+}
+
+void Application::createNewBarrel()
+{
+	Barrel* barrel = new Barrel(m_donkeyKong.getTimePerAction());
+	barrel->setPosition(m_donkeyKong.xRight(), m_donkeyKong.yBottom() - BARREL_SIZE.y);
+	barrel->setPlatform(m_platforms[5]);
+	m_barrels.push_back(barrel);
 }

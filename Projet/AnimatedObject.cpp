@@ -3,7 +3,7 @@
 
 const sf::Time AnimatedObject::TimePerAnim = sf::seconds(TIME_PER_ANIM);
 
-AnimatedObject::AnimatedObject(std::string textureFile, sf::Vector2i spriteSize, Anim anim):
+AnimatedObject::AnimatedObject(std::string textureFile, sf::Vector2u spriteSize, Anim anim):
 	SimpleObject(textureFile),
 	m_spriteSize(spriteSize),
 	m_anim(anim),

@@ -2,7 +2,7 @@
 #include "Character.h"
 #include <iostream>
 
-Character::Character(std::string textureFile, Direction direction, float speed, sf::Vector2i spriteSize, bool moving) :
+Character::Character(std::string textureFile, Direction direction, float speed, sf::Vector2u spriteSize, bool moving) :
 	AnimatedObject(textureFile, spriteSize),
 	m_direction(direction),
 	m_speed(speed),
@@ -74,4 +74,19 @@ void Character::updateSprite()
 	if ( !m_moving || ++m_anim.x == m_anim.nb )
 		m_anim.x = 0;
 	setTextureAnim();
+}
+
+Platform * Character::getPlatform() const
+{
+	return m_platform;
+}
+
+void Character::setPlatform(Platform * platform)
+{
+	m_platform = platform;
+}
+
+Gravity Character::getGravityState() const
+{
+	return m_gravityState;
 }

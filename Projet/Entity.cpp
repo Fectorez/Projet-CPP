@@ -23,3 +23,8 @@ bool Entity::isHidden() const
 {
 	return m_hidden;
 }
+
+void Entity::setManager(PhysicsManager * manager)
+{
+	m_manager = manager;
+}

@@ -13,11 +13,15 @@ public:
 	Direction getDirection() const;
 	float xLeft() const;
 	float xRight() const;
+	float yTop() const;
+	float yBottom() const;
 
 private:
 	std::vector<SimpleObject*> m_parts;
 	Direction m_direction; // vers le haut
 	float m_xLeft;
 	float m_xRight;
+	float m_yTop;
+	float m_yBottom;
 };
 

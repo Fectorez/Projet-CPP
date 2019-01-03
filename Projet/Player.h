@@ -16,11 +16,8 @@ public:
 	bool isFalling() const;
 	void makeFall();
 	void stopFall();
-	Platform* getPlatform() const;
-	void setPlatform(Platform* platform);
 	Ladder* getLadder() const;
 	void setLadder(Ladder* ladder);
-	Gravity getGravityState() const;
 	float getMaxJump() const;
 	void resetMaxJump();
 	void setClimbingLadder(Ladder* ladder, Direction direction);
@@ -33,9 +30,7 @@ private:
 
 private:
 	static const float MAX_JUMP_SPEED;
-	Gravity m_gravityState = Gravity::None;
 	float m_jumpSpeed = MAX_JUMP_SPEED;
-	Platform* m_platform = nullptr;
 	Ladder* m_ladder = nullptr;
 
 	float m_maxJump; // Point y le plus haut atteint lors du saut

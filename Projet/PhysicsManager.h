@@ -1,22 +1,40 @@
 #pragma once
 
-#include "Collision.h"
-#include "Player.h"
-#include "Platform.h"
-#include "Ladder.h"
+#include "pch.h"
 
-namespace PhysicsManager
+class Player;
+class Platform;
+class Ladder;
+class Character;
+class Barrel;
+class SimpleObject;
+
+class PhysicsManager
 {
-	bool collide(sf::Sprite& obj1, sf::Sprite& obj2);
-	bool collide(Player & player, SimpleObject * obj2);
-	void manageMarioClimb(Player& player);
-	void manageMarioDescent(Player& player);
-	void manageMarioJump(Player& player, Platform& platform);
-	void manageMarioFall(Player& player, std::vector<Platform*> platforms);
-	void playerDoesntMove(Player& player);
-	void playerTriesToGoLeft(Player& player);
-	void playerTriesToGoRight(Player& player);
-	void playerTriesToClimbLadder(Player& player, std::vector<Ladder*> ladders);
-	void playerTriesToClimbOffLadder(Player& player, std::vector<Ladder*> ladders);
+public:
+	PhysicsManager();
+	~PhysicsManager();
+	static bool collide(sf::Sprite& obj1, sf::Sprite& obj2);
+	static bool collide(Character* obj1, SimpleObject * obj2);
+	void addAll(Player* player, std::vector<Ladder*>* ladders, std::vector<Platform*>* platforms, std::vector<Barrel*>* barrels);
+	void manageMarioClimb();
+	void manageMarioDescent();
+	void manageBarrelsDescent();
+	//void manageMarioJump();
+	void manageMarioFall();
+	void playerDoesntMove();
+	void playerTriesToGoLeft();
+	void playerTriesToGoRight();
+	void playerTriesToClimbLadder();
+	void playerTriesToClimbOffLadder();
+
+private:
+	void manageDescent(Character* obj);
+
+private:
+	Player* m_player;
+	std::vector<Ladder*>* m_ladders;
+	std::vector<Platform*>* m_platforms;
+	std::vector<Barrel*>* m_barrels;
 };
 
