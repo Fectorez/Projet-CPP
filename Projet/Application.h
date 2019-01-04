@@ -5,6 +5,7 @@
 #include "Ladder.h"
 #include "DonkeyKong.h"
 #include "Barrel.h"
+#include "BarrelOfOil.h"
 #include "PhysicsManager.h"
 
 class Application
@@ -33,6 +34,7 @@ class Application
 		DonkeyKong m_donkeyKong;
 		std::vector<Barrel*> m_barrels;
 		SimpleObject m_peach;
+		BarrelOfOil m_barrelOfOil;
 		PhysicsManager m_manager;
 };
 

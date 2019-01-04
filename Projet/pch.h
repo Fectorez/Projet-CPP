@@ -17,7 +17,7 @@
 #define WINDOW_HEIGHT 448
 #define TIME_PER_FRAME (1.f / 60.f)
 #define PLAYER_SPEED 1
-#define TIME_PER_ANIM (1.f / 15.f)
+#define TIME_PER_ANIM (1.f / 12.f)
 #define MARIO_TEXTURE_FILE "mario_sprite8.png"
 #define ENEMY_TEXTURE_FILE "goomba_sprite.png"
 #define COIN_TEXTURE_FILE "coin_sprite.png"
@@ -27,12 +27,15 @@
 #define DK_TEXTURE_FILE "donkey_kong_sprite2.png"
 #define BARREL_TEXTURE_FILE "barrel_sprite2.png"
 #define PEACH_TEXTURE_FILE "peach_sprite.png"
+#define BARREL_OIL_TEXTURE_FILE "barrel_of_oil2.png"
 #define PLATFORM_SIZE_X 32
 #define PLATFORM_SIZE_Y 16
 const sf::Vector2u MARIO_SIZE{ 32, 32 };
 const sf::Vector2u DK_SIZE{ 86, 64 };
 const sf::Vector2u BARREL_SIZE{ 24, 20 };
 const sf::Vector2u PEACH_SIZE{ 23, 32 };
+const sf::Vector2u BARREL_OIL_SIZE{ 32, 64 };
+
 const sf::IntRect PEACH_RECT{ 0, 0, 23, 32 };
 
 const float MAX_JUMP = 2.0f;
@@ -71,5 +74,9 @@ const Anim DK_ANIM{ 0, 0, 4 };
 #define DK_ANIM_LEFT 1
 #define DK_ANIM_STOP_BARREL 2
 #define DK_ANIM_RIGHT 3
+
+// Barril de pétrole
+const Anim BARRIL_OIL_ANIM{ 0, 0, 1 };
+const Anim BARRIL_OIL_ANIM_FIRE{ 0, 1 ,3 };
 
 #endif //PCH_H
