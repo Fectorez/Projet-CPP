@@ -7,7 +7,7 @@
 class Character : public AnimatedObject
 {
 public:
-	Character(std::string textureFile, Direction direction, float speed, sf::Vector2u spriteSize, bool moving = false);
+	Character(std::string textureFile, Direction direction, float speed, sf::Vector2u spriteSize, float ySpeed = 0.f, bool moving = false);
 	~Character();
 	Direction getDirection() const;
 	void setDirection(Direction direction);
@@ -19,6 +19,12 @@ public:
 	Platform* getPlatform() const;
 	void setPlatform(Platform* platform);
 	Gravity getGravityState() const;
+	void makeFall();
+	float getMaxJump() const;
+	void resetMaxJump();
+	bool isFalling() const;
+	void stopFall();
+	void setExitPlatform(Platform* exitPlatform);
 	virtual void setAnim() = 0;
 
 protected:
@@ -27,7 +33,10 @@ protected:
 protected:
 	Direction m_direction;
 	float m_speed;
+	float m_ySpeed;
 	bool m_moving;
 	Gravity m_gravityState = Gravity::None;
 	Platform* m_platform = nullptr;
+	Platform* m_exitPlatform = nullptr;
+	float m_maxJump; // Point y le plus haut atteint lors du saut
 };

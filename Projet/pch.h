@@ -17,7 +17,6 @@
 #define WINDOW_HEIGHT 448
 #define TIME_PER_FRAME (1.f / 60.f)
 #define PLAYER_SPEED 1
-#define TEXTURE_SIZE 32
 #define TIME_PER_ANIM (1.f / 15.f)
 #define MARIO_TEXTURE_FILE "mario_sprite8.png"
 #define ENEMY_TEXTURE_FILE "goomba_sprite.png"
@@ -27,11 +26,17 @@
 #define BARRELS_STACK_TEXTURE_FILE "barrels_stack3.png"
 #define DK_TEXTURE_FILE "donkey_kong_sprite2.png"
 #define BARREL_TEXTURE_FILE "barrel_sprite2.png"
+#define PEACH_TEXTURE_FILE "peach_sprite.png"
 #define PLATFORM_SIZE_X 32
 #define PLATFORM_SIZE_Y 16
 const sf::Vector2u MARIO_SIZE{ 32, 32 };
 const sf::Vector2u DK_SIZE{ 86, 64 };
 const sf::Vector2u BARREL_SIZE{ 24, 20 };
+const sf::Vector2u PEACH_SIZE{ 23, 32 };
+const sf::IntRect PEACH_RECT{ 0, 0, 23, 32 };
+
+const float MAX_JUMP = 2.0f;
+const float JUMP_SPEED = 0.08f;
 
 enum class Gravity { Up, Down, None };
 enum class Direction { Left, Right, Up, Down };

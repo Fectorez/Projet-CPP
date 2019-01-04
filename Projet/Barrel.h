@@ -12,8 +12,11 @@ public:
 	void setAnim();
 	Gravity getGravityState() const;
 
+	bool isLeft() const;
+
 private:
 	sf::Time m_timeToStart;
 	sf::Clock m_startClock;
+	bool m_left = false;
 };
 

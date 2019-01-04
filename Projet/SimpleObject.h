@@ -7,6 +7,7 @@ class SimpleObject : public Entity
 {
 public:
 	SimpleObject(std::string textureFile);
+	SimpleObject(std::string textureFile, sf::IntRect textureRect);
 	~SimpleObject();
 	void draw(sf::RenderWindow& window);
 	sf::Vector2f getPosition()const;
@@ -20,8 +21,8 @@ public:
 	void setXRight(float x);
 	void setYBottom(float y);
 	sf::Vector2i getSize() const;
-	float width() const;
-	float height() const;
+	int width() const;
+	int height() const;
 	sf::Sprite getSprite() const;
 	void moveX(float x);
 	void moveY(float y);

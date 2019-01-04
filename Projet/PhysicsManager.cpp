@@ -31,6 +31,46 @@ bool PhysicsManager::collide(Character* obj1, SimpleObject * obj2)
 	return collide(s1,s2);
 }
 
+bool PhysicsManager::collide_1D_strict(sf::Vector2f a, sf::Vector2f b)
+{
+	bool aLeft_bRight = a.y > b.x && a.x < b.x;
+	bool aRight_bLeft = b.y > a.x && b.x < a.x;
+	bool a_in_b = a.x > b.x && a.y < b.y;
+	bool b_in_a = b.x > a.x && b.y < a.y;
+	return aLeft_bRight || aRight_bLeft || a_in_b || b_in_a;
+}
+
+bool PhysicsManager::collide_1D_strict(sf::Vector2f a, sf::Vector2f b, float percentOfA)
+{
+	float commonPart = -1.f;
+
+	bool aLeft_bRight = a.y > b.x && a.x < b.x;
+	if ( aLeft_bRight )
+		commonPart = a.y - b.x;
+
+	bool aRight_bLeft = b.y > a.x && b.x < a.x;
+	if ( aRight_bLeft )
+		commonPart = b.y - a.x;
+
+	bool a_in_b = a.x > b.x && a.y < b.y;
+	if ( a_in_b )
+		return true;
+
+	bool b_in_a = b.x > a.x && b.y < a.y;
+	if ( b_in_a )
+		return true;
+
+	if ( commonPart != -1.f )
+	{
+		float commonPartPercent = commonPart * 100 / (a.y - a.x);
+		return commonPartPercent >= percentOfA;
+	}
+
+	return false;
+}
+
+
+
 void PhysicsManager::addAll(Player * player, std::vector<Ladder*>* ladders, std::vector<Platform*>* platforms, std::vector<Barrel*>* barrels)
 {
 	m_player = player;
@@ -110,18 +150,13 @@ void PhysicsManager::manageMarioJump(Player & player, Platform & platform)
 
 void PhysicsManager::manageMarioFall()
 {
-	if ( !m_player->isFalling() )
-		return;
-	for ( auto platform : *m_platforms )
-		for ( auto pPart : platform->getParts() )
-			if ( collide(m_player, pPart) && m_player->yBottom() <= pPart->yBottom() && pPart->y() - m_player->height() > m_player->getMaxJump() )
-			{
-				m_player->resetMaxJump();
-				m_player->setPlatform(platform);
-				m_player->stopFall();
-				m_player->setY(pPart->y()-m_player->height());
-				return;
-			}
+	manageFall(m_player);
+}
+
+void PhysicsManager::manageBarrelsFall()
+{
+	for ( Barrel* barrel : *m_barrels )
+		manageFall(barrel,true);
 }
 
 void PhysicsManager::playerDoesntMove()
@@ -157,8 +192,16 @@ void PhysicsManager::playerTriesToClimbLadder()
 	else
 	{
 		for ( Ladder* ladder : *m_ladders )
-			if ( collide(m_player, ladder) )
-				m_player->setClimbingLadder(ladder,Direction::Up);
+			if ( collide_1D_strict({ ladder->x(),ladder->xRight() }, { m_player->x(),m_player->xRight() }, 100) )
+			{
+				float yDiff = ladder->yBottom() - m_player->yBottom();
+				if ( yDiff >= 0 && yDiff <= 2 )
+				{
+					m_player->setClimbingLadder(ladder, Direction::Up);
+					return;
+				}
+			}
+		m_player->setMoving(false);
 	}
 }
 void PhysicsManager::playerTriesToClimbOffLadder()
@@ -166,7 +209,7 @@ void PhysicsManager::playerTriesToClimbOffLadder()
 	if ( m_player->getLadder() == nullptr )
 	{
 		for ( Ladder* ladder : *m_ladders )
-			if ( m_player->x() >= ladder->x() && m_player->x() <= ladder->xRight() || m_player->xRight() >= ladder->x() && m_player->xRight() <= ladder->xRight() )
+			if ( collide_1D_strict({ladder->x(),ladder->xRight()}, { m_player->x(),m_player->xRight() }, 100) )
 			{
 				float yDiff = ladder->y() - m_player->yBottom();
 				if ( yDiff >= 0 && yDiff < 2 )
@@ -194,7 +237,7 @@ void PhysicsManager::manageDescent(Character* obj)
 	// Sort de sa plateforme
 	if ( descendsLeft && obj->xRight() < obj->getPlatform()->xLeft() || descendsRight && obj->x() >= obj->getPlatform()->xRight() )
 	{
-		m_player->makeFall();
+		obj->makeFall();
 		return;
 	}
 	for ( SimpleObject* ppart : obj->getPlatform()->getParts() )
@@ -202,6 +245,34 @@ void PhysicsManager::manageDescent(Character* obj)
 		bool ownPPart = descendsRight && obj->x() >= ppart->x() && obj->xRight() <= ppart->xRight();
 		ownPPart = ownPPart || descendsLeft && obj->xRight() <= ppart->xRight() && obj->x() >= ppart->x();
 		if ( ownPPart && obj->yBottom() + 1 < ppart->y() )
-			obj->setY(ppart->y() - obj->getSize().y);
+			obj->setY(ppart->y() - obj->getSize().y );
+	}
+}
+
+void PhysicsManager::manageFall(Character * obj, bool setBottomDirection)
+{
+	if ( !obj->isFalling() )
+		return;
+	// Parcourir à l'envers pour déposer Mario sur le bon bloc
+	for ( int i = m_platforms->size()-1 ; i >= 0 ; i-- )
+	{
+		Platform* platform = m_platforms->at(i);
+		for ( int j = platform->getParts().size()-1 ; j >= 0 ; j-- )
+		{
+			SimpleObject* block = platform->getParts()[j];
+			if ( collide(obj, block) && obj->yBottom() <= block->yBottom() && block->y() - obj->height() > obj->getMaxJump() )
+			{
+				obj->resetMaxJump();
+				obj->setPlatform(platform);
+				obj->stopFall();
+				obj->setY(block->y() - obj->height());
+				if ( setBottomDirection )
+				{
+					Direction dir = (platform->getDirection() == Direction::Left ? Direction::Right : Direction::Left);
+					obj->setDirection(dir);
+				}
+				return;
+			}
+		}
 	}
 }

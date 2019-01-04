@@ -21,6 +21,7 @@ class Application
 		void processPlayerInputs();
 
 		void createNewBarrel();
+		bool win() const;
 
 	private:
 		static const sf::Time TimePerFrame;
@@ -31,6 +32,7 @@ class Application
 		SimpleObject m_barrelsStack;
 		DonkeyKong m_donkeyKong;
 		std::vector<Barrel*> m_barrels;
+		SimpleObject m_peach;
 		PhysicsManager m_manager;
 };
 

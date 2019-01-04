@@ -23,6 +23,8 @@ void Barrel::update()
 		setDirection(Direction::Right);
 	}
 	Character::update();
+	if ( xRight() <= 0 )
+		m_left = true;
 }
 
 void Barrel::setAnim()
@@ -33,4 +35,9 @@ void Barrel::setAnim()
 Gravity Barrel::getGravityState() const
 {
 	return m_gravityState;
+}
+
+bool Barrel::isLeft() const
+{
+	return m_left;
 }

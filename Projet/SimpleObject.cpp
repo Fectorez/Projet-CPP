@@ -13,6 +13,12 @@ SimpleObject::SimpleObject(std::string textureFile)
 	m_sprite.setTexture(m_texture);
 }
 
+SimpleObject::SimpleObject(std::string textureFile, sf::IntRect textureRect):
+	SimpleObject(textureFile)
+{
+	m_sprite.setTextureRect(textureRect);
+}
+
 
 SimpleObject::~SimpleObject()
 {
@@ -80,12 +86,12 @@ sf::Vector2i SimpleObject::getSize() const
 	return sf::Vector2i(rect.width,rect.height);
 }
 
-float SimpleObject::width() const
+int SimpleObject::width() const
 {
 	return getSize().x;
 }
 
-float SimpleObject::height() const
+int SimpleObject::height() const
 {
 	return getSize().y;
 }
