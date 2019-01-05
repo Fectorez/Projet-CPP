@@ -48,10 +48,11 @@ void DonkeyKong::updateSprite()
 void DonkeyKong::setNextState()
 {
 	int intState = ((int)m_state) + 1;
+	if ( (DKState)intState == DKState::StopBlueBarrel )
+		intState++;
 	if ( intState == m_anim.nb )
 		intState = 0;
 	m_state = (DKState)intState;
-	
 }
 
 void DonkeyKong::doAction()
@@ -63,6 +64,8 @@ void DonkeyKong::doAction()
 	case DKState::Left :
 		break;
 	case DKState::StopBarrel:
+		break;
+	case DKState::StopBlueBarrel:
 		break;
 	case DKState::Right:
 		m_placesBarrel = true;

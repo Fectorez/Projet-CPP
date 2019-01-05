@@ -11,7 +11,7 @@ Application::Application() :
 	m_barrelsStack(BARRELS_STACK_TEXTURE_FILE),
 	m_donkeyKong(),
 	m_peach(PEACH_TEXTURE_FILE,PEACH_RECT),
-	m_barrelOfOil()
+	m_burningBarrel()
 {
 	// TMP //
 	Platform* firstPlatform = new Platform({ 0, WINDOW_HEIGHT - PLATFORM_SIZE_Y }, Direction::Right, Position::Bottom);
@@ -53,7 +53,7 @@ Application::Application() :
 
 	m_donkeyKong.setPosition(40, m_platforms[5]->yTop() - 64);
 	m_peach.setPosition(m_ladders[9]->xRight(), m_platforms[6]->yTop()-32);
-	m_barrelOfOil.setPosition(m_platforms[0]->getParts()[1]->x(), m_platforms[0]->getParts()[1]->y() - 64);
+	m_burningBarrel.setPosition(m_platforms[0]->getParts()[1]->x(), m_platforms[0]->getParts()[1]->y() - 64);
 
 	m_manager.addAll(&m_player,&m_ladders,&m_platforms,&m_barrels);
 }
@@ -108,7 +108,7 @@ void Application::processPlayerInputs()
 	else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Down) )
 		m_manager.playerTriesToClimbOffLadder();
 	else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::A) )
-		m_barrelOfOil.setInFire();
+		m_burningBarrel.setInFire();
 	else
 		m_manager.playerDoesntMove();
 	if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Space) )
@@ -137,7 +137,7 @@ void Application::update()
 	m_player.update();
 	m_donkeyKong.update();
 	m_peach.update();
-	m_barrelOfOil.update();
+	m_burningBarrel.update();
 	if ( m_donkeyKong.placesBarrel() )
 		createNewBarrel();
 	if ( win() )
@@ -160,7 +160,7 @@ void Application::render()
 		platform->draw(m_window);
 	for ( Barrel* barrel : m_barrels )
 		barrel->draw(m_window);
-	m_barrelOfOil.draw(m_window);
+	m_burningBarrel.draw(m_window);
 	m_barrelsStack.draw(m_window);
 	m_peach.draw(m_window);
 	m_donkeyKong.draw(m_window);

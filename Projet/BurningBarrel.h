@@ -1,14 +1,14 @@
 #pragma once
 #include "AnimatedObject.h"
-class BarrelOfOil :
+class BurningBarrel :
 	public AnimatedObject
 {
 public:
 	enum State{ Off, InFire };
 
 public:
-	BarrelOfOil();
-	~BarrelOfOil();
+	BurningBarrel();
+	~BurningBarrel();
 	void setInFire();
 
 private:

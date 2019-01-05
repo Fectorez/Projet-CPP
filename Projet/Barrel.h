@@ -6,6 +6,7 @@ class Barrel :
 	public Character
 {
 public:
+	Barrel(std::string textureFile, sf::Time timeToStart);
 	Barrel(sf::Time timeToStart);
 	~Barrel();
 	void update();

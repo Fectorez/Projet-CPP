@@ -2,10 +2,16 @@
 #include "Barrel.h"
 
 
-Barrel::Barrel(sf::Time timeToStart):
-	Character(BARREL_TEXTURE_FILE, Direction::Right, 1, BARREL_SIZE),
+Barrel::Barrel(std::string textureFile, sf::Time timeToStart):
+	Character(textureFile, Direction::Right, 1, BARREL_SIZE),
 	m_timeToStart(timeToStart),
 	m_startClock()
+{
+	setAnim();
+}
+
+Barrel::Barrel(sf::Time timeToStart):
+	Barrel(BARREL_TEXTURE_FILE,timeToStart)
 {
 	setAnim();
 }
