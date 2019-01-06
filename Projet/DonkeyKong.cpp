@@ -34,6 +34,16 @@ bool DonkeyKong::placesBarrel()
 	return false;
 }
 
+bool DonkeyKong::placesBlueBarrel()
+{
+	if ( m_placesBlueBarrel )
+	{
+		m_placesBlueBarrel = false;
+		return true;
+	}
+	return false;
+}
+
 sf::Time DonkeyKong::getTimePerAction() const
 {
 	return m_timePerAction;
@@ -42,17 +52,39 @@ sf::Time DonkeyKong::getTimePerAction() const
 void DonkeyKong::updateSprite()
 {
 	m_anim.x = (int)m_state;
+	if ( m_state == DKState::RightBlueBarrel )
+		m_anim.x = (int)DKState::Right;
 	setTextureAnim();
 }
 
 void DonkeyKong::setNextState()
 {
-	int intState = ((int)m_state) + 1;
-	if ( (DKState)intState == DKState::StopBlueBarrel )
-		intState++;
-	if ( intState == m_anim.nb )
-		intState = 0;
-	m_state = (DKState)intState;
+	int alea;
+	bool blueBarrel;
+	switch ( m_state )
+	{
+	case DKState::Stop :
+		m_state = DKState::Left;
+		break;
+	case DKState::Left:
+		alea = rand() % 100 + 1;
+		blueBarrel = alea < PROBA_BLUE_BARREL * 100;
+		if ( blueBarrel )
+			m_state = DKState::StopBlueBarrel;
+		else
+			m_state = DKState::StopBarrel;
+		break;
+	case DKState::StopBarrel :
+		m_state = DKState::Right;
+		break;
+	case DKState::StopBlueBarrel:
+		m_state = DKState::RightBlueBarrel;
+		break;
+	case DKState::Right:
+		m_state = DKState::Stop;
+	case DKState::RightBlueBarrel:
+		m_state = DKState::Stop;
+	}
 }
 
 void DonkeyKong::doAction()
@@ -69,6 +101,9 @@ void DonkeyKong::doAction()
 		break;
 	case DKState::Right:
 		m_placesBarrel = true;
+		break;
+	case DKState::RightBlueBarrel:
+		m_placesBlueBarrel = true;
 		break;
 	}
 }

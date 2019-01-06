@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 
 #define TITLE "Donkey Kong"
 #define WINDOW_WIDTH 448
@@ -26,6 +28,8 @@
 #define BURNING_BARREL_TEXTURE_FILE "burningBarrel_sprite.png"
 #define BLUE_BARREL_TEXTURE_FILE "blueBarrel_sprite2.png"
 
+typedef int TYPE;
+
 const float MAX_JUMP = 2.0f;
 const float JUMP_SPEED = 0.08f;
 
@@ -43,6 +47,8 @@ struct Anim
 // Barril
 const Anim BARREL_ANIM{ 0, 0, 4 };
 const sf::Vector2u BARREL_SIZE{ 24, 20 };
+const TYPE WOODEN = 0;
+const TYPE BLUE = 1;
 
 // Barril de pétrole
 const Anim BURNING_BARRIL_ANIM_OFF{ 0, 0, 1 };
@@ -57,7 +63,8 @@ const Anim DK_ANIM{ 0, 0, 5 };
 #define DK_ANIM_STOP_BLUE_BARREL 3
 #define DK_ANIM_RIGHT 4
 const sf::Vector2u DK_SIZE{ 86, 64 };
-enum class DKState { Stop, Left, StopBarrel, StopBlueBarrel, Right };
+enum class DKState { Stop, Left, StopBarrel, StopBlueBarrel, Right, RightBlueBarrel };
+const float PROBA_BLUE_BARREL = 1.f / 2.f;
 
 // Mario
 const Anim ANIM_LEFT{ 0,0,3 };

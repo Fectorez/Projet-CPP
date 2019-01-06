@@ -12,7 +12,7 @@ public:
 	void update();
 	void setAnim();
 	Gravity getGravityState() const;
-
+	virtual TYPE getType() const;
 	bool isLeft() const;
 
 private:

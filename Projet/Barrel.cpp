@@ -43,6 +43,11 @@ Gravity Barrel::getGravityState() const
 	return m_gravityState;
 }
 
+TYPE Barrel::getType() const
+{
+	return WOODEN;
+}
+
 bool Barrel::isLeft() const
 {
 	return m_left;

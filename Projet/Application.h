@@ -5,6 +5,7 @@
 #include "Ladder.h"
 #include "DonkeyKong.h"
 #include "Barrel.h"
+#include "BlueBarrel.h"
 #include "BurningBarrel.h"
 #include "PhysicsManager.h"
 
@@ -21,7 +22,7 @@ class Application
 		void processEvents();
 		void processPlayerInputs();
 
-		void createNewBarrel();
+		void createNewBarrel(bool blue = false);
 		bool win() const;
 
 	private:

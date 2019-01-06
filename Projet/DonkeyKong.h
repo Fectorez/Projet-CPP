@@ -8,6 +8,7 @@ public:
 	~DonkeyKong();
 	void update();
 	bool placesBarrel();
+	bool placesBlueBarrel();
 	sf::Time getTimePerAction() const;
 
 private:
@@ -19,5 +20,7 @@ private:
 	DKState m_state;
 	sf::Time m_timePerAction;
 	bool m_placesBarrel = false;
+	bool m_placesBlueBarrel = false;
+	bool m_nextBarrelIsBlue = false;
 };
 

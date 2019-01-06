@@ -7,6 +7,8 @@
 #include "Ladder.h"
 #include "Character.h"
 #include "Barrel.h"
+#include "BurningBarrel.h"
+#include "BlueBarrel.h"
 
 PhysicsManager::PhysicsManager()
 {
@@ -24,11 +26,18 @@ bool PhysicsManager::collide(sf::Sprite& obj1, sf::Sprite& obj2)
 	return rect1.intersects(rect2);
 }
 
-bool PhysicsManager::collide(Character* obj1, SimpleObject * obj2)
+bool PhysicsManager::collide(Character * obj1, SimpleObject * obj2)
 {
 	sf::Sprite s1 = obj1->getSprite();
 	sf::Sprite s2 = obj2->getSprite();
-	return collide(s1,s2);
+	return collide(s1, s2);
+}
+
+bool PhysicsManager::collide(BurningBarrel * obj1, BlueBarrel * obj2)
+{
+	sf::Sprite s1 = obj1->getSprite();
+	sf::Sprite s2 = obj2->getSprite();
+	return collide(s1, s2);
 }
 
 bool PhysicsManager::collide_1D_strict(sf::Vector2f a, sf::Vector2f b)
@@ -71,12 +80,13 @@ bool PhysicsManager::collide_1D_strict(sf::Vector2f a, sf::Vector2f b, float per
 
 
 
-void PhysicsManager::addAll(Player * player, std::vector<Ladder*>* ladders, std::vector<Platform*>* platforms, std::vector<Barrel*>* barrels)
+void PhysicsManager::addAll(Player * player, std::vector<Ladder*>* ladders, std::vector<Platform*>* platforms, std::vector<Barrel*>* barrels, BurningBarrel* burningBarrel)
 {
 	m_player = player;
 	m_ladders = ladders;
 	m_platforms = platforms;
 	m_barrels = barrels;
+	m_burningBarrel = burningBarrel;
 	m_player->setManager(this);
 	for ( Ladder* ladder : *m_ladders )
 		ladder->setManager(this);
@@ -224,6 +234,14 @@ void PhysicsManager::playerTriesToClimbOffLadder()
 		m_player->setDirection(Direction::Down);
 		m_player->setMoving(true);
 	}
+}
+
+bool PhysicsManager::blueBarreltouchsBurningBarrel(Barrel* barrel)
+{
+	if ( barrel->getType() == BLUE )
+		if ( collide(barrel, m_burningBarrel) )
+			return true;
+	return false;
 }
 
 void PhysicsManager::manageDescent(Character* obj)

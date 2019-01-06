@@ -6,5 +6,6 @@ class BlueBarrel :
 public:
 	BlueBarrel(sf::Time timeToStart);
 	~BlueBarrel();
+	TYPE getType() const;
 };
 
