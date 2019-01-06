@@ -10,6 +10,7 @@ class Barrel;
 class SimpleObject;
 class BurningBarrel;
 class BlueBarrel;
+class FireMonster;
 
 class PhysicsManager
 {
@@ -21,13 +22,14 @@ public:
 	static bool collide(BurningBarrel* obj1, BlueBarrel * obj2);
 	static bool collide_1D_strict(sf::Vector2f a, sf::Vector2f b);
 	static bool collide_1D_strict(sf::Vector2f a, sf::Vector2f b, float percentOfA); // Collision de segment à <percent>% (Ex: {1,3} et {2,30} -> 50% de A)
-	void addAll(Player* player, std::vector<Ladder*>* ladders, std::vector<Platform*>* platforms, std::vector<Barrel*>* barrels, BurningBarrel* burningBarrel);
+	void addAll(Player* player, std::vector<Ladder*>* ladders, std::vector<Platform*>* platforms, std::vector<Barrel*>* barrels, BurningBarrel* burningBarrel, std::vector<FireMonster*>* fireMonsters);
 	void manageMarioClimb();
 	void manageMarioDescent();
 	void manageBarrelsDescent();
 	//void manageMarioJump();
 	void manageMarioFall();
 	void manageBarrelsFall();
+	void manageFireMonstersFall();
 	void playerDoesntMove();
 	void playerTriesToGoLeft();
 	void playerTriesToGoRight();
@@ -44,6 +46,7 @@ private:
 	std::vector<Ladder*>* m_ladders;
 	std::vector<Platform*>* m_platforms;
 	std::vector<Barrel*>* m_barrels;
+	std::vector<FireMonster*>* m_fireMonsters;
 	BurningBarrel* m_burningBarrel;
 };
 

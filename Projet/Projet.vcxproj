@@ -172,6 +172,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="DonkeyKong.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="FireMonster.h" />
     <ClInclude Include="Ladder.h" />
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="SimpleObject.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DonkeyKong.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="FireMonster.cpp" />
     <ClCompile Include="Ladder.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="SimpleObject.cpp" />

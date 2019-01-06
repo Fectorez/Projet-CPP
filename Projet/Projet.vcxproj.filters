@@ -63,6 +63,9 @@
     <ClInclude Include="BlueBarrel.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="FireMonster.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -111,6 +114,9 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="BlueBarrel.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="FireMonster.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

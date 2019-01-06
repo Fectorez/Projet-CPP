@@ -9,6 +9,7 @@
 #include "Barrel.h"
 #include "BurningBarrel.h"
 #include "BlueBarrel.h"
+#include "FireMonster.h"
 
 PhysicsManager::PhysicsManager()
 {
@@ -80,13 +81,14 @@ bool PhysicsManager::collide_1D_strict(sf::Vector2f a, sf::Vector2f b, float per
 
 
 
-void PhysicsManager::addAll(Player * player, std::vector<Ladder*>* ladders, std::vector<Platform*>* platforms, std::vector<Barrel*>* barrels, BurningBarrel* burningBarrel)
+void PhysicsManager::addAll(Player * player, std::vector<Ladder*>* ladders, std::vector<Platform*>* platforms, std::vector<Barrel*>* barrels, BurningBarrel* burningBarrel, std::vector<FireMonster*>* fireMonsters)
 {
 	m_player = player;
 	m_ladders = ladders;
 	m_platforms = platforms;
 	m_barrels = barrels;
 	m_burningBarrel = burningBarrel;
+	m_fireMonsters = fireMonsters;
 	m_player->setManager(this);
 	for ( Ladder* ladder : *m_ladders )
 		ladder->setManager(this);
@@ -94,6 +96,8 @@ void PhysicsManager::addAll(Player * player, std::vector<Ladder*>* ladders, std:
 		platform->setManager(this);
 	for ( Barrel* barrel : *m_barrels )
 		barrel->setManager(this);
+	for ( FireMonster* fireMonster : *m_fireMonsters )
+		fireMonster->setManager(this);
 }
 
 
@@ -167,6 +171,12 @@ void PhysicsManager::manageBarrelsFall()
 {
 	for ( Barrel* barrel : *m_barrels )
 		manageFall(barrel,true);
+}
+
+void PhysicsManager::manageFireMonstersFall()
+{
+	for ( FireMonster* fireMonster : *m_fireMonsters )
+		manageFall(fireMonster);
 }
 
 void PhysicsManager::playerDoesntMove()

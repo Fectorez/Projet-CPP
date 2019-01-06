@@ -8,6 +8,7 @@
 #include "BlueBarrel.h"
 #include "BurningBarrel.h"
 #include "PhysicsManager.h"
+#include "FireMonster.h"
 
 class Application
 {
@@ -23,6 +24,7 @@ class Application
 		void processPlayerInputs();
 
 		void createNewBarrel(bool blue = false);
+		void createNewFireMonster();
 		bool win() const;
 
 	private:
@@ -31,6 +33,7 @@ class Application
 		Player m_player;
 		std::vector<Platform*> m_platforms;
 		std::vector<Ladder*> m_ladders;
+		std::vector<FireMonster*> m_fireMonsters;
 		SimpleObject m_barrelsStack;
 		DonkeyKong m_donkeyKong;
 		std::vector<Barrel*> m_barrels;

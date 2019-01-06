@@ -10,10 +10,15 @@
 #define WINDOW_WIDTH 448
 #define WINDOW_HEIGHT 448
 #define TIME_PER_FRAME (1.f / 60.f)
-#define PLAYER_SPEED 1
 #define TIME_PER_ANIM (1.f / 12.f)
 #define PLATFORM_SIZE_X 32
 #define PLATFORM_SIZE_Y 16
+
+// Vitesses
+#define PLAYER_SPEED 1
+#define BARREL_SPEED 8
+#define FIRE_MONSTER_SPEED 1
+#define FIRE_MONSTER_Y_SPEED (1.f/3.f)
 
 // Textures files
 #define MARIO_TEXTURE_FILE "mario_sprite8.png"
@@ -27,6 +32,7 @@
 #define PEACH_TEXTURE_FILE "peach_sprite.png"
 #define BURNING_BARREL_TEXTURE_FILE "burningBarrel_sprite.png"
 #define BLUE_BARREL_TEXTURE_FILE "blueBarrel_sprite2.png"
+#define FIRE_MONSTER_TEXTURE_FILE "fireMonster_sprite.png"
 
 typedef int TYPE;
 
@@ -65,6 +71,10 @@ const Anim DK_ANIM{ 0, 0, 5 };
 const sf::Vector2u DK_SIZE{ 86, 64 };
 enum class DKState { Stop, Left, StopBarrel, StopBlueBarrel, Right, RightBlueBarrel };
 const float PROBA_BLUE_BARREL = 1.f / 2.f;
+
+// Fire monster
+const sf::Vector2u FIRE_MONSTER_SIZE{ 30, 32 };
+const Anim FIRE_MONSTER_ANIM{ 0, 0, 4 };
 
 // Mario
 const Anim ANIM_LEFT{ 0,0,3 };

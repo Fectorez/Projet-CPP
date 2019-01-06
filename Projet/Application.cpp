@@ -25,9 +25,11 @@ Application::Application() :
 	m_platforms.push_back(new Platform({ WINDOW_WIDTH - PLATFORM_SIZE_X * 2, (int)(WINDOW_HEIGHT*(2.f / 7.f)) }, Direction::Left, Position::Top));
 	m_platforms.push_back(new Platform({ m_platforms[5]->getParts()[7]->x()+PLATFORM_SIZE_X/2, (int)(WINDOW_HEIGHT*(1.f / 7.f)) }, Direction::Right, Position::Peach));
 	m_platforms.push_back(new Platform({ m_platforms[6]->xLeft()-48, -PLATFORM_SIZE_Y }, Direction::Right, Position::Peach));
+
 	m_player.setPlatform(m_platforms[0]);
 	sf::Vector2f firstPPartPos = firstPlatform->getParts()[0]->getPosition();
 	m_player.setPosition(firstPPartPos.x, firstPPartPos.y - 32);
+
 	m_ladders = std::vector<Ladder*>();
 	m_ladders.push_back(new Ladder());
 	m_ladders[0]->build(m_platforms[1]->getParts()[1], m_platforms[0]->getParts()[11], Direction::Right);
@@ -51,13 +53,16 @@ Application::Application() :
 	m_ladders[9]->build(m_platforms[7]->getParts()[1], m_platforms[5]->getParts()[4], Direction::Left);
 	m_ladders.push_back(new Ladder());
 	m_ladders[10]->build(m_platforms[7]->getParts()[0], m_platforms[5]->getParts()[3], Direction::Left);
+
+	m_fireMonsters = std::vector<FireMonster*>();
+
 	m_barrelsStack.setPosition(0, m_platforms[5]->yTop()-64);
 
 	m_donkeyKong.setPosition(40, m_platforms[5]->yTop() - 64);
 	m_peach.setPosition(m_ladders[9]->xRight(), m_platforms[6]->yTop()-32);
 	m_burningBarrel.setPosition(m_platforms[0]->getParts()[1]->x(), m_platforms[0]->getParts()[1]->y() - 64);
 
-	m_manager.addAll(&m_player,&m_ladders,&m_platforms,&m_barrels,&m_burningBarrel);
+	m_manager.addAll(&m_player,&m_ladders,&m_platforms,&m_barrels,&m_burningBarrel,&m_fireMonsters);
 }
 
 
@@ -67,6 +72,8 @@ Application::~Application()
 		delete ladder;
 	for ( Platform* platform : m_platforms )
 		delete platform;
+	for ( FireMonster* fireMonster : m_fireMonsters )
+		delete fireMonster;
 }
 
 void Application::run()
@@ -133,12 +140,22 @@ void Application::update()
 			delete m_barrels[i];
 			m_barrels.erase(m_barrels.begin() + i);
 			i--;
+			createNewFireMonster();
 		}
 		else if ( m_barrels[i]->isLeft() )
 		{
 			delete m_barrels[i];
 			m_barrels.erase(m_barrels.begin() + i);
 			i--;
+		}
+	}
+	for ( FireMonster* fireMonster : m_fireMonsters )
+	{
+		fireMonster->update();
+		if ( PhysicsManager::collide(&m_player, fireMonster) )
+		{
+			//TODO
+			std::cout << "PERDU" << std::endl;
 		}
 	}
 	m_player.update();
@@ -158,6 +175,7 @@ void Application::update()
 	m_manager.manageBarrelsDescent();
 	m_manager.manageMarioFall();
 	m_manager.manageBarrelsFall();
+	m_manager.manageFireMonstersFall();
 }
 
 void Application::render()
@@ -170,6 +188,8 @@ void Application::render()
 		platform->draw(m_window);
 	for ( Barrel* barrel : m_barrels )
 		barrel->draw(m_window);
+	for ( FireMonster* fireMonster : m_fireMonsters )
+		fireMonster->draw(m_window);
 	m_barrelsStack.draw(m_window);
 	m_peach.draw(m_window);
 	m_donkeyKong.draw(m_window);
@@ -188,6 +208,14 @@ void Application::createNewBarrel(bool blue)
 	barrel->setPlatform(m_platforms[5]);
 	barrel->setExitPlatform(m_platforms[0]);
 	m_barrels.push_back(barrel);
+}
+
+void Application::createNewFireMonster()
+{
+	FireMonster* fireMonster = new FireMonster();
+	fireMonster->setPosition(m_burningBarrel.x(), m_burningBarrel.yBottom() - 50);
+	fireMonster->makeFall();
+	m_fireMonsters.push_back(fireMonster);
 }
 
 bool Application::win() const

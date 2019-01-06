@@ -3,7 +3,7 @@
 
 
 Barrel::Barrel(std::string textureFile, sf::Time timeToStart):
-	Character(textureFile, Direction::Right, 1, BARREL_SIZE),
+	Character(textureFile, Direction::Right, BARREL_SPEED, BARREL_SIZE),
 	m_timeToStart(timeToStart),
 	m_startClock()
 {
