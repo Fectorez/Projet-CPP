@@ -3,7 +3,7 @@
 #include "PhysicsManager.h"
 
 Player::Player(std::string textureFile) :
-	Character(textureFile, Direction::Right, PLAYER_SPEED, MARIO_SIZE,MAX_JUMP)
+	Character(textureFile, Direction::Right, MARIO_SIZE, PLAYER_SPEED, PLAYER_Y_DELTA, PLAYER_MAX_Y_SPEED)
 {
 	resetMaxJump();
 	setAnim();
@@ -27,15 +27,6 @@ void Player::update()
 void Player::updateSprite()
 {
 	Character::updateSprite();
-}
-
-void Player::setJumping()
-{
-	if ( m_gravityState == Gravity::None )
-	{
-		m_gravityState = Gravity::Up;
-		setAnim();
-	}
 }
 
 bool Player::isGoingUp() const
@@ -80,14 +71,14 @@ void Player::setAnim()
 
 void Player::climbUpLadder()
 {
-	moveY(-m_speed);
+	moveY(-m_speed.x);
 	if ( !PhysicsManager::collide(this, m_ladder) )
 		stopClimbLadder();
 }
 
 void Player::climbOffLadder()
 {
-	moveY(m_speed);
+	moveY(m_speed.x);
 	if ( yBottom() >= m_ladder->yBottom() )
 		stopClimbLadder();
 }

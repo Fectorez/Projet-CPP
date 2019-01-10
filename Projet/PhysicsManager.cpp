@@ -246,12 +246,9 @@ void PhysicsManager::playerTriesToClimbOffLadder()
 	}
 }
 
-bool PhysicsManager::blueBarreltouchsBurningBarrel(Barrel* barrel)
+bool PhysicsManager::endOfBarrel(Barrel* barrel)
 {
-	if ( barrel->getType() == BLUE )
-		if ( collide(barrel, m_burningBarrel) )
-			return true;
-	return false;
+	return barrel->x() <= m_burningBarrel->x() && barrel->yBottom() > m_burningBarrel->y();
 }
 
 void PhysicsManager::manageDescent(Character* obj)

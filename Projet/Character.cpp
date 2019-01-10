@@ -2,12 +2,13 @@
 #include "Character.h"
 #include <iostream>
 
-Character::Character(std::string textureFile, Direction direction, float speed, sf::Vector2u spriteSize, float ySpeed, bool moving) :
+Character::Character(std::string textureFile, Direction direction, sf::Vector2u spriteSize, sf::Vector2f speed, float yDelta, float maxYSpeed, bool moving) :
 	AnimatedObject(textureFile, spriteSize),
 	m_direction(direction),
 	m_speed(speed),
-	m_ySpeed(ySpeed),
-	m_moving(moving)
+	m_moving(moving),
+	m_maxYSpeed(maxYSpeed),
+	m_yDelta(yDelta)
 {
 }
 
@@ -29,6 +30,23 @@ void Character::setDirection(Direction direction)
 	}
 }
 
+void Character::switchDirection()
+{
+	if ( m_direction == Direction::Left )
+		m_direction = Direction::Right;
+	else if ( m_direction == Direction::Right )
+		m_direction = Direction::Left;
+	else if ( m_direction == Direction::Up )
+		m_direction = Direction::Down;
+	else if ( m_direction == Direction::Down )
+		m_direction = Direction::Up;
+}
+
+bool Character::reachesEndOfWindow() const
+{
+	return x() <= 0 || xRight() >= WINDOW_WIDTH;
+}
+
 bool Character::isMoving() const
 {
 	return m_moving;
@@ -37,6 +55,15 @@ bool Character::isMoving() const
 void Character::setMoving(bool moving)
 {
 	m_moving = moving;
+}
+
+void Character::setJumping()
+{
+	if ( m_gravityState == Gravity::None )
+	{
+		m_gravityState = Gravity::Up;
+		setAnim();
+	}
 }
 
 void Character::moveX(float x)
@@ -55,32 +82,32 @@ void Character::update()
 	{
 		if ( m_direction == Direction::Left )
 		{
-			moveX(-m_speed);
+			moveX(-m_speed.x);
 			if ( x() < 0 && xRight() > 0 && ( !m_exitPlatform || m_exitPlatform != m_platform ) )
 				setX(0);
 		}
 		else if ( m_direction == Direction::Right )
 		{
-			moveX(m_speed);
+			moveX(m_speed.x);
 			if ( xRight() > WINDOW_WIDTH && m_exitPlatform != m_platform )
 				setXRight(WINDOW_WIDTH);
 		}
 	}
 	if ( m_gravityState == Gravity::Up )
 	{
-		moveY(-m_ySpeed);
-		m_ySpeed -= JUMP_SPEED;
-		if ( m_ySpeed <= 0 )
+		moveY(-m_speed.y);
+		m_speed.y -= m_yDelta;
+		if ( m_speed.y <= 0 )
 		{
 			m_gravityState = Gravity::Down;
-			m_ySpeed = 0;
+			m_speed.y = 0;
 			m_maxJump = y();
 		}
 	}
 	else if ( m_gravityState == Gravity::Down )
 	{
-		moveY(m_ySpeed);
-		m_ySpeed += 0.1f;
+		moveY(m_speed.y);
+		m_speed.y += m_yDelta;
 	}
 
 	AnimatedObject::update();
@@ -114,7 +141,7 @@ void Character::makeFall()
 	{
 		m_gravityState = Gravity::Down;
 		m_platform = nullptr;
-		m_ySpeed = 0.f;
+		m_speed.y = 0.f;
 	}
 }
 
@@ -137,7 +164,7 @@ void Character::stopFall()
 {
 	m_gravityState = Gravity::None;
 	setAnim();
-	m_ySpeed = MAX_JUMP;
+	m_speed.y = m_maxYSpeed;
 }
 
 void Character::setExitPlatform(Platform * exitPlatform)

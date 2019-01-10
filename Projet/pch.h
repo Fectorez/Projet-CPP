@@ -15,10 +15,14 @@
 #define PLATFORM_SIZE_Y 16
 
 // Vitesses
-#define PLAYER_SPEED 1
-#define BARREL_SPEED 8
-#define FIRE_MONSTER_SPEED 1
-#define FIRE_MONSTER_Y_SPEED (1.f/3.f)
+const sf::Vector2f PLAYER_SPEED{ 1.f, 2.f };
+const float PLAYER_MAX_Y_SPEED = 2.0f;
+const float PLAYER_Y_DELTA = 0.08f;
+const sf::Vector2f BARREL_SPEED{ 8.f, 0.f };
+const float BARREL_Y_DELTA = 0.08f;
+const sf::Vector2f FIRE_MONSTER_SPEED{ 1.f, 0.3f };
+const float FIRE_MONSTER_MAX_Y_SPEED = 1.0f;
+const float FIRE_MONSTER_Y_DELTA = 0.08f;
 
 // Textures files
 #define MARIO_TEXTURE_FILE "mario_sprite8.png"
@@ -35,9 +39,6 @@
 #define FIRE_MONSTER_TEXTURE_FILE "fireMonster_sprite.png"
 
 typedef int TYPE;
-
-const float MAX_JUMP = 2.0f;
-const float JUMP_SPEED = 0.08f;
 
 enum class Gravity { Up, Down, None };
 enum class Direction { Left, Right, Up, Down };
@@ -74,7 +75,8 @@ const float PROBA_BLUE_BARREL = 1.f / 2.f;
 
 // Fire monster
 const sf::Vector2u FIRE_MONSTER_SIZE{ 30, 32 };
-const Anim FIRE_MONSTER_ANIM{ 0, 0, 4 };
+const Anim FIRE_MONSTER_ANIM_LEFT{ 0, 0, 2 };
+const Anim FIRE_MONSTER_ANIM_RIGHT{ 0, 1, 2 };
 
 // Mario
 const Anim ANIM_LEFT{ 0,0,3 };

@@ -7,5 +7,6 @@ public:
 	FireMonster();
 	~FireMonster();
 	void setAnim();
+	void update();
 };
 

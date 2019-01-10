@@ -11,7 +11,6 @@ public:
 	~Player();
 	void update();
 	void updateSprite();
-	void setJumping();
 	bool isGoingUp() const;
 	Ladder* getLadder() const;
 	void setLadder(Ladder* ladder);

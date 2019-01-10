@@ -134,13 +134,16 @@ void Application::update()
 			//TODO
 			std::cout << "PERDU" << std::endl;
 		}
-		else if ( m_manager.blueBarreltouchsBurningBarrel(m_barrels[i]) )
+		else if ( m_manager.endOfBarrel(m_barrels[i]) )
 		{
-			m_burningBarrel.setInFire();
+			if ( m_barrels[i]->getType() == BLUE )
+			{
+				m_burningBarrel.setInFire();
+				createNewFireMonster();
+			}
 			delete m_barrels[i];
 			m_barrels.erase(m_barrels.begin() + i);
 			i--;
-			createNewFireMonster();
 		}
 		else if ( m_barrels[i]->isLeft() )
 		{
@@ -181,13 +184,13 @@ void Application::update()
 void Application::render()
 {
 	m_window.clear();
-	m_burningBarrel.draw(m_window);
 	for ( Ladder* ladder : m_ladders )
 		ladder->draw(m_window);
-	for ( Platform* platform : m_platforms )
-		platform->draw(m_window);
 	for ( Barrel* barrel : m_barrels )
 		barrel->draw(m_window);
+	m_burningBarrel.draw(m_window);
+	for ( Platform* platform : m_platforms )
+		platform->draw(m_window);
 	for ( FireMonster* fireMonster : m_fireMonsters )
 		fireMonster->draw(m_window);
 	m_barrelsStack.draw(m_window);

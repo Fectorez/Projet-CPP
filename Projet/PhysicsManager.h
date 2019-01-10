@@ -35,7 +35,7 @@ public:
 	void playerTriesToGoRight();
 	void playerTriesToClimbLadder();
 	void playerTriesToClimbOffLadder();
-	bool blueBarreltouchsBurningBarrel(Barrel* barrel);
+	bool endOfBarrel(Barrel* barrel);
 
 private:
 	void manageDescent(Character* obj);
