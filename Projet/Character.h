@@ -27,7 +27,6 @@ public:
 	void resetMaxJump();
 	bool isFalling() const;
 	void stopFall();
-	void setExitPlatform(Platform* exitPlatform);
 	virtual void setAnim() = 0;
 
 protected:
@@ -39,7 +38,6 @@ protected:
 	bool m_moving;
 	Gravity m_gravityState = Gravity::None;
 	Platform* m_platform = nullptr;
-	Platform* m_exitPlatform = nullptr;
 	float m_maxJump; // Point y le plus haut atteint lors du saut
 	float m_maxYSpeed;
 	float m_yDelta;

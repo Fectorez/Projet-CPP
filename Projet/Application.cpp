@@ -209,7 +209,6 @@ void Application::createNewBarrel(bool blue)
 		barrel = new Barrel(m_donkeyKong.getTimePerAction());
 	barrel->setPosition(m_donkeyKong.xRight(), m_donkeyKong.yBottom() - BARREL_SIZE.y);
 	barrel->setPlatform(m_platforms[5]);
-	barrel->setExitPlatform(m_platforms[0]);
 	m_barrels.push_back(barrel);
 }
 

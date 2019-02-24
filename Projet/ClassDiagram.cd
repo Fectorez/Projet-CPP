@@ -24,14 +24,14 @@
   <Class Name="Application" Collapsed="true">
     <Position X="7.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CBAAAgEAABAAQQQAAAAEIABAAQAKAAAAAAEAAFAUACA=</HashCode>
+      <HashCode>CBAAAgEAABAAYQQAAAAEIABAAQAKAAAAAAEBAFAUACA=</HashCode>
       <FileName>Application.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Character" Collapsed="true">
     <Position X="3.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAiIQAAAAAAACRAAEgECCAIQAoACAIEBAAAEqAI=</HashCode>
+      <HashCode>AACAABiIQAAAAAgACRAAAgFCCAIQAoACAIEFAAAEqAI=</HashCode>
       <FileName>Character.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -73,7 +73,7 @@
   <Class Name="Player" Collapsed="true">
     <Position X="5" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAQAAABBAAAUAAAAAAAAECAAAQAAAAAAAAAQBkARA=</HashCode>
+      <HashCode>AAAAQAAABBAAAUAAAAAAAAEAAAAQAAAAAAAAAQBkARA=</HashCode>
       <FileName>Player.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -115,8 +115,15 @@
   <Class Name="PhysicsManager" Collapsed="true">
     <Position X="15" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CAIAAgkgAAABAQaEAAAkAABAgAgEAAAAAABACAAAIAA=</HashCode>
+      <HashCode>CEIAAgkgAAABIQaEAAAkAABAgAgEAAAAAABACAAAIAA=</HashCode>
       <FileName>PhysicsManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FireMonster" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAIAAAAAAAAAEAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>FireMonster.h</FileName>
     </TypeIdentifier>
   </Class>
   <Struct Name="Anim" Collapsed="true">

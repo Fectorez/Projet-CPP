@@ -83,13 +83,13 @@ void Character::update()
 		if ( m_direction == Direction::Left )
 		{
 			moveX(-m_speed.x);
-			if ( x() < 0 && xRight() > 0 && ( !m_exitPlatform || m_exitPlatform != m_platform ) )
+			if ( x() < 0 && xRight() > 0 )
 				setX(0);
 		}
 		else if ( m_direction == Direction::Right )
 		{
 			moveX(m_speed.x);
-			if ( xRight() > WINDOW_WIDTH && m_exitPlatform != m_platform )
+			if ( xRight() > WINDOW_WIDTH )
 				setXRight(WINDOW_WIDTH);
 		}
 	}
@@ -165,9 +165,4 @@ void Character::stopFall()
 	m_gravityState = Gravity::None;
 	setAnim();
 	m_speed.y = m_maxYSpeed;
-}
-
-void Character::setExitPlatform(Platform * exitPlatform)
-{
-	m_exitPlatform = exitPlatform;
 }
