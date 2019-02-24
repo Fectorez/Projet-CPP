@@ -175,6 +175,7 @@
     <ClInclude Include="FireMonster.h" />
     <ClInclude Include="Ladder.h" />
     <ClInclude Include="PhysicsManager.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="SimpleObject.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Platform.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="FireMonster.cpp" />
     <ClCompile Include="Ladder.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SimpleObject.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

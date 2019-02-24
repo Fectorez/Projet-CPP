@@ -9,6 +9,7 @@
 #include "BurningBarrel.h"
 #include "PhysicsManager.h"
 #include "FireMonster.h"
+#include "Scene.h"
 
 class Application
 {
@@ -21,24 +22,10 @@ class Application
 		void update();
 		void render();
 		void processEvents();
-		void processPlayerInputs();
-
-		void createNewBarrel(bool blue = false);
-		void createNewFireMonster();
-		bool win() const;
 
 	private:
 		static const sf::Time TimePerFrame;
 		sf::RenderWindow m_window;
-		Player m_player;
-		std::vector<Platform*> m_platforms;
-		std::vector<Ladder*> m_ladders;
-		std::vector<FireMonster*> m_fireMonsters;
-		SimpleObject m_barrelsStack;
-		DonkeyKong m_donkeyKong;
-		std::vector<Barrel*> m_barrels;
-		SimpleObject m_peach;
-		BurningBarrel m_burningBarrel;
-		PhysicsManager m_manager;
+		Scene* m_scene;
 };
 
