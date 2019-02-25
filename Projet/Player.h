@@ -15,14 +15,20 @@ public:
 	Ladder* getLadder() const;
 	void setLadder(Ladder* ladder);
 	void setClimbingLadder(Ladder* ladder, Direction direction);
+	void setHammer();
 
 private:
 	void setAnim();
 	void climbUpLadder();
 	void climbOffLadder();
 	void stopClimbLadder();
+	void setTextureAnim();
 
 private:
 	Ladder* m_ladder = nullptr;
+	sf::Vector2u m_hammerSpriteSize;
+	unsigned m_blockSizeY = MARIO_TEXTURE_BLOCK_SIZE_Y;
+	HammerState m_hammerState;
+	bool m_hasHammer = false;
 };
 

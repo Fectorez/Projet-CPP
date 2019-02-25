@@ -25,7 +25,7 @@ const float FIRE_MONSTER_MAX_Y_SPEED = 1.0f;
 const float FIRE_MONSTER_Y_DELTA = 0.08f;
 
 // Textures files
-#define MARIO_TEXTURE_FILE "mario_sprite8.png"
+#define MARIO_TEXTURE_FILE "mario_sprite9.png"
 #define ENEMY_TEXTURE_FILE "goomba_sprite.png"
 #define COIN_TEXTURE_FILE "coin_sprite.png"
 #define PLATFORM_TEXTURE_FILE "platform.png"
@@ -86,6 +86,8 @@ const Anim ANIM_RIGHT{ 0,1,3 };
 const Anim ANIM_LADDER{ 0,2,2 };
 const Anim ANIM_JUMP_LEFT{ 0,3,1 };
 const Anim ANIM_JUMP_RIGHT{ 0,4,1 };
+const Anim ANIM_HAMMER_LEFT{ 0,5,6 };
+const Anim ANIM_HAMMER_RIGHT{ 0,6,6 };
 #define ANIM_LEFT_Y 1
 #define ANIM_RIGHT_Y 2
 #define ANIM_CLIMBING_LADDER_Y 3
@@ -93,6 +95,17 @@ const Anim ANIM_JUMP_RIGHT{ 0,4,1 };
 #define ANIM_RIGHT_NB 3
 #define ANIM_CLIMBING_LADDER_NB 2
 const sf::Vector2u MARIO_SIZE{ 32, 32 };
+// La hauteur de chaque ligne
+const unsigned MARIO_TEXTURE_BLOCK_SIZE_Y = 52;
+
+/*
+	A propos du marteau, je propose :
+	Comme le sprite du marteau est 2 fois plus gros (64 au lieu de 32),
+	Mettre le textureRect à 64x64 au lieu de 32x32 dès que mario prend le marteau.
+	+ Si on a le temps (vraiment facultatif) (voir HammerState) : si le marteau est en l'air (up) et que mario se prend un barril => il meurt ; sinon il explose le barril.
+*/
+const sf::Vector2u MARIO_HAMMER_SIZE{ 64, 52 };
+enum class HammerState{ None, Up, Down };
 
 // Peach
 const sf::Vector2u PEACH_SIZE{ 23, 32 };

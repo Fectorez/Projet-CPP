@@ -3,10 +3,16 @@
 #include "PhysicsManager.h"
 
 Player::Player(std::string textureFile) :
-	Character(textureFile, Direction::Right, MARIO_SIZE, PLAYER_SPEED, PLAYER_Y_DELTA, PLAYER_MAX_Y_SPEED)
+	Character(textureFile, Direction::Right, MARIO_SIZE, PLAYER_SPEED, PLAYER_Y_DELTA, PLAYER_MAX_Y_SPEED),
+	m_hammerSpriteSize(MARIO_HAMMER_SIZE),
+	m_hammerState(HammerState::None)
 {
 	resetMaxJump();
 	setAnim();
+
+	// TMP !
+	setHammer();
+	//
 }
 
 
@@ -51,6 +57,12 @@ void Player::setClimbingLadder(Ladder* ladder, Direction direction)
 	setDirection(direction);
 }
 
+void Player::setHammer()
+{
+	m_hasHammer = true;
+	setAnim();
+}
+
 void Player::setAnim()
 {
 	if ( m_gravityState == Gravity::Up )
@@ -62,9 +74,19 @@ void Player::setAnim()
 	else
 	{
 		if ( m_direction == Direction::Left )
-			m_anim = ANIM_LEFT;
+		{
+			if ( m_hasHammer )
+				m_anim = ANIM_HAMMER_LEFT;
+			else
+				m_anim = ANIM_LEFT;
+		}
 		else if ( m_direction == Direction::Right )
-			m_anim = ANIM_RIGHT;
+		{
+			if ( m_hasHammer )
+				m_anim = ANIM_HAMMER_RIGHT;
+			else
+				m_anim = ANIM_RIGHT;
+		}
 		else m_anim = ANIM_LADDER;
 	}
 }
@@ -89,4 +111,12 @@ void Player::stopClimbLadder()
 	setDirection(Direction::Right);
 	setMoving(false);
 	makeFall();
+}
+
+void Player::setTextureAnim()
+{
+	sf::Vector2u currentSpriteSize = m_spriteSize;
+	if ( m_hasHammer && (m_direction == Direction::Left || m_direction == Direction::Right) )
+		currentSpriteSize = m_hammerSpriteSize;
+	m_sprite.setTextureRect(sf::IntRect(m_anim.x*currentSpriteSize.x, m_anim.y*m_blockSizeY, currentSpriteSize.x, currentSpriteSize.y));
 }
