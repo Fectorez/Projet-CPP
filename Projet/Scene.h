@@ -18,6 +18,8 @@ class Scene
 		void update();
 		void draw(sf::RenderWindow& window);
 		bool finished() const;
+		void setPause(bool);
+		void drawGameOver(sf::RenderWindow& window);
 
 	private:
 		void processPlayerInputs();
@@ -31,6 +33,8 @@ class Scene
 		std::vector<Ladder*> m_ladders;
 		std::vector<FireMonster*> m_fireMonsters;
 		SimpleObject m_barrelsStack;
+		SimpleObject m_winText;
+		SimpleObject m_loseText;
 		DonkeyKong m_donkeyKong;
 		std::vector<Barrel*> m_barrels;
 		SimpleObject m_peach;
@@ -38,5 +42,6 @@ class Scene
 		PhysicsManager m_manager;
 		bool m_lost = false;
 		bool m_won = false;
+		bool m_paused = false;
 };
 

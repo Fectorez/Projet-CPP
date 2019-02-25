@@ -48,8 +48,12 @@ void Application::processEvents()
 void Application::update()
 {
 	m_scene->update();
-	if ( m_scene->finished() )
-		m_scene = new Scene();
+	if (m_scene->finished()) {
+		m_scene->setPause(true);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
+			m_scene = new Scene();
+		}
+	}
 }
 
 void Application::render()

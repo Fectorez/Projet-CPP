@@ -18,7 +18,7 @@
 const sf::Vector2f PLAYER_SPEED{ 1.f, 2.f };
 const float PLAYER_MAX_Y_SPEED = 2.0f;
 const float PLAYER_Y_DELTA = 0.08f;
-const sf::Vector2f BARREL_SPEED{ 8.f, 0.f };
+const sf::Vector2f BARREL_SPEED{ 3.f, 0.f };
 const float BARREL_Y_DELTA = 0.08f;
 const sf::Vector2f FIRE_MONSTER_SPEED{ 1.f, 0.3f };
 const float FIRE_MONSTER_MAX_Y_SPEED = 1.0f;
@@ -37,6 +37,8 @@ const float FIRE_MONSTER_Y_DELTA = 0.08f;
 #define BURNING_BARREL_TEXTURE_FILE "burningBarrel_sprite.png"
 #define BLUE_BARREL_TEXTURE_FILE "blueBarrel_sprite2.png"
 #define FIRE_MONSTER_TEXTURE_FILE "fireMonster_sprite.png"
+#define WIN_TEXT_TEXTURE_FILE "win_text.png"
+#define LOSE_TEXT_TEXTURE_FILE "lose_text.png"
 
 typedef int TYPE;
 

@@ -2,12 +2,14 @@
 #include "Scene.h"
 
 
-Scene::Scene():
+Scene::Scene() :
 	m_player(MARIO_TEXTURE_FILE),
 	m_barrelsStack(BARRELS_STACK_TEXTURE_FILE),
 	m_donkeyKong(),
 	m_peach(PEACH_TEXTURE_FILE, PEACH_RECT),
-	m_burningBarrel()
+	m_burningBarrel(),
+	m_winText(WIN_TEXT_TEXTURE_FILE),
+	m_loseText(LOSE_TEXT_TEXTURE_FILE)
 {
 	Platform* firstPlatform = new Platform({ 0, WINDOW_HEIGHT - PLATFORM_SIZE_Y }, Direction::Right, Position::Bottom);
 	m_platforms = { firstPlatform };
@@ -56,6 +58,9 @@ Scene::Scene():
 	m_burningBarrel.setPosition(m_platforms[0]->getParts()[1]->x(), m_platforms[0]->getParts()[1]->y() - 64);
 
 	m_manager.addAll(&m_player, &m_ladders, &m_platforms, &m_barrels, &m_burningBarrel, &m_fireMonsters);
+
+	m_winText.setPosition(100, 100);
+	m_loseText.setPosition(100, 100);
 }
 
 
@@ -71,61 +76,57 @@ Scene::~Scene()
 
 void Scene::update()
 {
-	if ( m_lost ) std::cout << "PERDU" << std::endl;
-	if ( m_lost || m_won )
-		//TODO Sébastien afficher perdu
-		return;
-
-	for ( Platform* platform : m_platforms )
-		platform->update();
-	for ( int i = 0 ; i < m_barrels.size() ; i++ )
-	{
-		m_barrels[i]->update();
-		if ( PhysicsManager::collide(&m_player, m_barrels[i]) )
-			m_lost = true;
-
-		else if ( m_manager.endOfBarrel(m_barrels[i]) )
+	if (!m_paused) {
+		for (Platform* platform : m_platforms)
+			platform->update();
+		for (int i = 0; i < m_barrels.size(); i++)
 		{
-			if ( m_barrels[i]->getType() == BLUE )
+			m_barrels[i]->update();
+			if (PhysicsManager::collide(&m_player, m_barrels[i]))
+				m_lost = true;
+
+			else if (m_manager.endOfBarrel(m_barrels[i]))
 			{
-				m_burningBarrel.setInFire();
-				createNewFireMonster();
+				if (m_barrels[i]->getType() == BLUE)
+				{
+					m_burningBarrel.setInFire();
+					createNewFireMonster();
+				}
+				delete m_barrels[i];
+				m_barrels.erase(m_barrels.begin() + i);
+				i--;
 			}
-			delete m_barrels[i];
-			m_barrels.erase(m_barrels.begin() + i);
-			i--;
+			else if (m_barrels[i]->isLeft())
+			{
+				delete m_barrels[i];
+				m_barrels.erase(m_barrels.begin() + i);
+				i--;
+			}
 		}
-		else if ( m_barrels[i]->isLeft() )
+		for (FireMonster* fireMonster : m_fireMonsters)
 		{
-			delete m_barrels[i];
-			m_barrels.erase(m_barrels.begin() + i);
-			i--;
+			fireMonster->update();
+			if (PhysicsManager::collide(&m_player, fireMonster))
+				m_lost = true;
 		}
+		m_player.update();
+		m_donkeyKong.update();
+		m_peach.update();
+		m_burningBarrel.update();
+		if (m_donkeyKong.placesBlueBarrel())
+			createNewBarrel(true);
+		if (m_donkeyKong.placesBarrel())
+			createNewBarrel();
+		if (win())
+			m_won = true;
+		//PhysicsManager::manageMarioJump(m_player, m_platform);
+		m_manager.manageMarioClimb();
+		m_manager.manageMarioDescent();
+		m_manager.manageBarrelsDescent();
+		m_manager.manageMarioFall();
+		m_manager.manageBarrelsFall();
+		m_manager.manageFireMonstersFall();
 	}
-	for ( FireMonster* fireMonster : m_fireMonsters )
-	{
-		fireMonster->update();
-		if ( PhysicsManager::collide(&m_player, fireMonster) )
-			m_lost = true;
-	}
-	m_player.update();
-	m_donkeyKong.update();
-	m_peach.update();
-	m_burningBarrel.update();
-	if ( m_donkeyKong.placesBlueBarrel() )
-		createNewBarrel(true);
-	if ( m_donkeyKong.placesBarrel() )
-		createNewBarrel();
-	if ( win() )
-		m_won = true;
-	//PhysicsManager::manageMarioJump(m_player, m_platform);
-	m_manager.manageMarioClimb();
-	m_manager.manageMarioDescent();
-	m_manager.manageBarrelsDescent();
-	m_manager.manageMarioFall();
-	m_manager.manageBarrelsFall();
-	m_manager.manageFireMonstersFall();
-
 	processPlayerInputs();
 }
 
@@ -144,6 +145,8 @@ void Scene::draw(sf::RenderWindow& window)
 	m_peach.draw(window);
 	m_donkeyKong.draw(window);
 	m_player.draw(window);
+
+	drawGameOver(window);
 }
 
 bool Scene::finished() const
@@ -151,20 +154,25 @@ bool Scene::finished() const
 	return m_lost || m_won;
 }
 
+
 void Scene::processPlayerInputs()
 {
-	if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Left) )
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		m_manager.playerTriesToGoLeft();
-	else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Right) )
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		m_manager.playerTriesToGoRight();
-	else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Up) )
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		m_manager.playerTriesToClimbLadder();
-	else if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Down) )
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		m_manager.playerTriesToClimbOffLadder();
 	else
 		m_manager.playerDoesntMove();
 	if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Space) )
 		m_player.setJumping();
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+		m_lost = true;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		m_won = true;
 }
 
 void Scene::createNewBarrel(bool blue)
@@ -190,4 +198,18 @@ void Scene::createNewFireMonster()
 bool Scene::win() const
 {
 	return m_player.getPlatform() == m_platforms[6];
+}
+
+void Scene::setPause(bool paused)
+{
+	m_paused = paused;
+}
+
+void Scene::drawGameOver(sf::RenderWindow & window)
+{
+	if (finished())
+		if (m_lost)
+			m_loseText.draw(window);
+		else
+			m_winText.draw(window);
 }
