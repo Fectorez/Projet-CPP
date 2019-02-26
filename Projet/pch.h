@@ -39,6 +39,7 @@ const float FIRE_MONSTER_Y_DELTA = 0.08f;
 #define FIRE_MONSTER_TEXTURE_FILE "fireMonster_sprite.png"
 #define WIN_TEXT_TEXTURE_FILE "win_text.png"
 #define LOSE_TEXT_TEXTURE_FILE "lose_text.png"
+#define HAMMER_TEXTURE_FILE "hammer1.png"
 
 typedef int TYPE;
 
@@ -106,6 +107,9 @@ const unsigned MARIO_TEXTURE_BLOCK_SIZE_Y = 52;
 */
 const sf::Vector2u MARIO_HAMMER_SIZE{ 64, 52 };
 enum class HammerState{ None, Up, Down };
+
+// Hammer
+const sf::Vector2u HAMMER_SIZE{ 18, 20 };
 
 // Peach
 const sf::Vector2u PEACH_SIZE{ 23, 32 };
