@@ -15,7 +15,8 @@ public:
 	Ladder* getLadder() const;
 	void setLadder(Ladder* ladder);
 	void setClimbingLadder(Ladder* ladder, Direction direction);
-	void setHammer();
+	void setHammer(bool);
+	bool hasHammer();
 
 private:
 	void setAnim();
@@ -30,5 +31,7 @@ private:
 	unsigned m_blockSizeY = MARIO_TEXTURE_BLOCK_SIZE_Y;
 	HammerState m_hammerState;
 	bool m_hasHammer = false;
+	sf::Clock clock;
+	sf::Time elapsed;
 };
 

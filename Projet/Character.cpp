@@ -57,6 +57,10 @@ void Character::setMoving(bool moving)
 	m_moving = moving;
 }
 
+void Character::setConstantAnim(bool anim) {
+	m_constantAnim = anim;
+}
+
 void Character::setJumping()
 {
 	if ( m_gravityState == Gravity::None )
@@ -115,7 +119,9 @@ void Character::update()
 
 void Character::updateSprite()
 {
-	if ( !m_moving || ++m_anim.x == m_anim.nb )
+	if (++m_anim.x == m_anim.nb)
+		m_anim.x = 0;
+	if(!m_moving && !m_constantAnim )
 		m_anim.x = 0;
 	setTextureAnim();
 }

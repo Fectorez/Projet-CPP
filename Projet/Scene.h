@@ -35,6 +35,7 @@ class Scene
 		SimpleObject m_barrelsStack;
 		SimpleObject m_winText;
 		SimpleObject m_loseText;
+		SimpleObject m_hammer;
 		DonkeyKong m_donkeyKong;
 		std::vector<Barrel*> m_barrels;
 		SimpleObject m_peach;

@@ -9,7 +9,8 @@ Scene::Scene() :
 	m_peach(PEACH_TEXTURE_FILE, PEACH_RECT),
 	m_burningBarrel(),
 	m_winText(WIN_TEXT_TEXTURE_FILE),
-	m_loseText(LOSE_TEXT_TEXTURE_FILE)
+	m_loseText(LOSE_TEXT_TEXTURE_FILE),
+	m_hammer(HAMMER_TEXTURE_FILE)
 {
 	Platform* firstPlatform = new Platform({ 0, WINDOW_HEIGHT - PLATFORM_SIZE_Y }, Direction::Right, Position::Bottom);
 	m_platforms = { firstPlatform };
@@ -59,6 +60,8 @@ Scene::Scene() :
 
 	m_manager.addAll(&m_player, &m_ladders, &m_platforms, &m_barrels, &m_burningBarrel, &m_fireMonsters);
 
+	m_hammer.setPosition(50, m_platforms[2]->yTop()+100);
+
 	m_winText.setPosition(100, 100);
 	m_loseText.setPosition(100, 100);
 }
@@ -79,11 +82,19 @@ void Scene::update()
 	if (!m_paused) {
 		for (Platform* platform : m_platforms)
 			platform->update();
+		//int barrels_size = m_barrels.size();
 		for (int i = 0; i < m_barrels.size(); i++)
 		{
 			m_barrels[i]->update();
 			if (PhysicsManager::collide(&m_player, m_barrels[i]))
-				m_lost = true;
+				if (!m_player.hasHammer())
+					m_lost = true;
+				else {
+					/*Destruction du barril
+					m_barrels[i]->~Barrel();
+					barrels_size = m_barrels.size();*/
+				}
+					
 
 			else if (m_manager.endOfBarrel(m_barrels[i]))
 			{
@@ -109,6 +120,13 @@ void Scene::update()
 			if (PhysicsManager::collide(&m_player, fireMonster))
 				m_lost = true;
 		}
+
+		if (PhysicsManager::collide(&m_player, &m_hammer)) {
+			m_player.setHammer(true);
+			m_hammer.hide();
+		}
+			
+
 		m_player.update();
 		m_donkeyKong.update();
 		m_peach.update();
@@ -144,6 +162,7 @@ void Scene::draw(sf::RenderWindow& window)
 	m_barrelsStack.draw(window);
 	m_peach.draw(window);
 	m_donkeyKong.draw(window);
+	m_hammer.draw(window);
 	m_player.draw(window);
 
 	drawGameOver(window);

@@ -28,6 +28,7 @@ public:
 	bool isFalling() const;
 	void stopFall();
 	virtual void setAnim() = 0;
+	void setConstantAnim(bool anim);
 
 protected:
 	virtual void updateSprite();
@@ -36,6 +37,7 @@ protected:
 	Direction m_direction;
 	sf::Vector2f m_speed;
 	bool m_moving;
+	bool m_constantAnim = false;
 	Gravity m_gravityState = Gravity::None;
 	Platform* m_platform = nullptr;
 	float m_maxJump; // Point y le plus haut atteint lors du saut

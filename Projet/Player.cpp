@@ -9,10 +9,6 @@ Player::Player(std::string textureFile) :
 {
 	resetMaxJump();
 	setAnim();
-
-	// TMP !
-	setHammer();
-	//
 }
 
 
@@ -26,6 +22,13 @@ void Player::update()
 		climbUpLadder();
 	else if ( m_moving && m_direction == Direction::Down )
 		climbOffLadder();
+
+	if (m_hasHammer) {
+		if (clock.getElapsedTime().asSeconds() - elapsed.asSeconds() > 20) {
+			elapsed = clock.getElapsedTime();
+			setHammer(false);
+		}
+	}
 
 	Character::update();
 }
@@ -57,38 +60,43 @@ void Player::setClimbingLadder(Ladder* ladder, Direction direction)
 	setDirection(direction);
 }
 
-void Player::setHammer()
+void Player::setHammer(bool hammer)
 {
-	m_hasHammer = true;
+	setConstantAnim(hammer);
+	m_hasHammer = hammer;
 	setAnim();
+}
+
+bool Player::hasHammer()
+{
+	return m_hasHammer;
 }
 
 void Player::setAnim()
 {
-	if ( m_gravityState == Gravity::Up )
-	{
-		if ( m_direction == Direction::Left )
-			m_anim = ANIM_JUMP_LEFT;
-		else m_anim = ANIM_JUMP_RIGHT;
+	if (m_hasHammer) {
+		if (m_direction == Direction::Left)
+			m_anim = ANIM_HAMMER_LEFT;
+		else
+			m_anim = ANIM_HAMMER_RIGHT;
 	}
-	else
-	{
-		if ( m_direction == Direction::Left )
+	else {
+		if (m_gravityState == Gravity::Up)
 		{
-			if ( m_hasHammer )
-				m_anim = ANIM_HAMMER_LEFT;
-			else
+			if (m_direction == Direction::Left)
+				m_anim = ANIM_JUMP_LEFT;
+			else m_anim = ANIM_JUMP_RIGHT;
+		}
+		else
+		{
+			if (m_direction == Direction::Left)
 				m_anim = ANIM_LEFT;
-		}
-		else if ( m_direction == Direction::Right )
-		{
-			if ( m_hasHammer )
-				m_anim = ANIM_HAMMER_RIGHT;
-			else
+			else if (m_direction == Direction::Right)
 				m_anim = ANIM_RIGHT;
+			else m_anim = ANIM_LADDER;
 		}
-		else m_anim = ANIM_LADDER;
 	}
+
 }
 
 void Player::climbUpLadder()
