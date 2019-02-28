@@ -204,24 +204,26 @@ void PhysicsManager::playerTriesToGoRight()
 
 void PhysicsManager::playerTriesToClimbLadder()
 {
-	if ( m_player->getLadder() != nullptr )
-	{
-		m_player->setDirection(Direction::Up);
-		m_player->setMoving(true);
-	}
-	else
-	{
-		for ( Ladder* ladder : *m_ladders )
-			if ( collide_1D_strict({ ladder->x(),ladder->xRight() }, { m_player->x(),m_player->xRight() }, 100) )
-			{
-				float yDiff = ladder->yBottom() - m_player->yBottom();
-				if ( yDiff >= 0 && yDiff <= 2 )
+	if (!m_player->hasHammer()) {
+		if (m_player->getLadder() != nullptr)
+		{
+			m_player->setDirection(Direction::Up);
+			m_player->setMoving(true);
+		}
+		else
+		{
+			for (Ladder* ladder : *m_ladders)
+				if (collide_1D_strict({ ladder->x(),ladder->xRight() }, { m_player->x(),m_player->xRight() }, 100))
 				{
-					m_player->setClimbingLadder(ladder, Direction::Up);
-					return;
+					float yDiff = ladder->yBottom() - m_player->yBottom();
+					if (yDiff >= 0 && yDiff <= 2)
+					{
+						m_player->setClimbingLadder(ladder, Direction::Up);
+						return;
+					}
 				}
-			}
-		m_player->setMoving(false);
+			m_player->setMoving(false);
+		}
 	}
 }
 void PhysicsManager::playerTriesToClimbOffLadder()

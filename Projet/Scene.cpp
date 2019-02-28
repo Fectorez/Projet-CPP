@@ -60,7 +60,7 @@ Scene::Scene() :
 
 	m_manager.addAll(&m_player, &m_ladders, &m_platforms, &m_barrels, &m_burningBarrel, &m_fireMonsters);
 
-	m_hammer.setPosition(50, m_platforms[2]->yTop()+100);
+	m_hammer.setPosition(100, m_platforms[0]->yTop()-10);
 
 	m_winText.setPosition(100, 100);
 	m_loseText.setPosition(100, 100);
@@ -123,7 +123,7 @@ void Scene::update()
 
 		if (PhysicsManager::collide(&m_player, &m_hammer)) {
 			m_player.setHammer(true);
-			m_hammer.hide();
+			m_hammer.setX(-255);//Moved outside the window
 		}
 			
 
@@ -162,8 +162,8 @@ void Scene::draw(sf::RenderWindow& window)
 	m_barrelsStack.draw(window);
 	m_peach.draw(window);
 	m_donkeyKong.draw(window);
-	m_hammer.draw(window);
 	m_player.draw(window);
+	m_hammer.draw(window);
 
 	drawGameOver(window);
 }

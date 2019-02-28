@@ -24,7 +24,7 @@ void Player::update()
 		climbOffLadder();
 
 	if (m_hasHammer) {
-		if (clock.getElapsedTime().asSeconds() - elapsed.asSeconds() > 20) {
+		if (clock.getElapsedTime().asSeconds() - elapsed.asSeconds() > 10) {
 			elapsed = clock.getElapsedTime();
 			setHammer(false);
 		}
