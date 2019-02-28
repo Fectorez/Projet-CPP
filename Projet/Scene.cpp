@@ -90,9 +90,9 @@ void Scene::update()
 				if (!m_player.hasHammer())
 					m_lost = true;
 				else {
-					/*Destruction du barril
-					m_barrels[i]->~Barrel();
-					barrels_size = m_barrels.size();*/
+					delete m_barrels[i];
+					m_barrels.erase(m_barrels.begin() + i);
+					i--;
 				}
 					
 
