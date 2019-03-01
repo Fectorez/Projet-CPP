@@ -204,10 +204,10 @@ void Scene::processPlayerInputs()
 		m_manager.playerDoesntMove();
 	if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Space) )
 		m_player.setJumping();
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
 		m_lost = true;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		m_won = true;
+		m_won = true;*/
 }
 
 void Scene::createNewBarrel(bool blue)
