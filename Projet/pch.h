@@ -114,7 +114,7 @@ const sf::Vector2u MARIO_HAMMER_SIZE{ 64, 52 };
 enum class HammerState{ None, Up, Down };
 
 // Hammer
-#define HAMMER_DURATION 10
+#define HAMMER_DURATION 1
 const sf::Vector2u HAMMER_SIZE{ 18, 20 };
 
 // Peach

@@ -134,7 +134,7 @@ void Scene::update()
 		if (m_hammer_music.getStatus() == sf::SoundSource::Playing && !m_player.hasHammer() && m_bgm_music.getStatus() == sf::SoundSource::Paused) {
 			m_hammer_music.stop();
 			m_bgm_music.play();
-			//TODO Change the state of the player to make the sprite fall
+			m_player.setY(m_player.getPosition().y+20);
 		}
 
 
