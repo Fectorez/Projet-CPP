@@ -27,6 +27,7 @@ void Player::update()
 		if (clock.getElapsedTime().asSeconds() - elapsed.asSeconds() > HAMMER_DURATION) {
 			elapsed = clock.getElapsedTime();
 			setHammer(false);
+			setAnim();
 		}
 	}
 
