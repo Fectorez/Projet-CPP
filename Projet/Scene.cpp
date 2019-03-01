@@ -11,7 +11,12 @@ Scene::Scene() :
 	m_winText(WIN_TEXT_TEXTURE_FILE),
 	m_loseText(LOSE_TEXT_TEXTURE_FILE),
 	m_hammer(HAMMER_TEXTURE_FILE)
-{
+{	
+	loadBGMMusic();
+	loadHammerMusic();
+	m_bgm_music.setLoop(true);
+	m_bgm_music.play();
+
 	Platform* firstPlatform = new Platform({ 0, WINDOW_HEIGHT - PLATFORM_SIZE_Y }, Direction::Right, Position::Bottom);
 	m_platforms = { firstPlatform };
 	m_platforms.push_back(new Platform({ WINDOW_WIDTH - PLATFORM_SIZE_X * 2, (int)(WINDOW_HEIGHT*(6.f / 7.f)) }, Direction::Left));
@@ -82,7 +87,6 @@ void Scene::update()
 	if (!m_paused) {
 		for (Platform* platform : m_platforms)
 			platform->update();
-		//int barrels_size = m_barrels.size();
 		for (int i = 0; i < m_barrels.size(); i++)
 		{
 			m_barrels[i]->update();
@@ -94,7 +98,7 @@ void Scene::update()
 					m_barrels.erase(m_barrels.begin() + i);
 					i--;
 				}
-					
+
 
 			else if (m_manager.endOfBarrel(m_barrels[i]))
 			{
@@ -124,8 +128,15 @@ void Scene::update()
 		if (PhysicsManager::collide(&m_player, &m_hammer)) {
 			m_player.setHammer(true);
 			m_hammer.setX(-255);//Moved outside the window
+			m_bgm_music.pause();
+			m_hammer_music.play();
 		}
-			
+		if (m_hammer_music.getStatus() == sf::SoundSource::Playing && !m_player.hasHammer() && m_bgm_music.getStatus() == sf::SoundSource::Paused) {
+			m_hammer_music.stop();
+			m_bgm_music.play();
+			//TODO Change the state of the player to make the sprite fall
+		}
+
 
 		m_player.update();
 		m_donkeyKong.update();
@@ -145,6 +156,11 @@ void Scene::update()
 		m_manager.manageBarrelsFall();
 		m_manager.manageFireMonstersFall();
 	}
+	else {
+		m_bgm_music.stop();
+		m_hammer_music.stop();
+	}
+		
 	processPlayerInputs();
 }
 
@@ -188,10 +204,10 @@ void Scene::processPlayerInputs()
 		m_manager.playerDoesntMove();
 	if ( sf::Keyboard::isKeyPressed(sf::Keyboard::Space) )
 		m_player.setJumping();
-	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
 		m_lost = true;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		m_won = true;*/
+		m_won = true;
 }
 
 void Scene::createNewBarrel(bool blue)
@@ -231,4 +247,14 @@ void Scene::drawGameOver(sf::RenderWindow & window)
 			m_loseText.draw(window);
 		else
 			m_winText.draw(window);
+}
+
+void Scene::loadBGMMusic() {
+	if (!m_bgm_music.openFromFile(BGM_MUSIC))
+		std::cout << "Could not load BGM music file" << std::endl;
+}
+
+void Scene::loadHammerMusic() {
+	if (!m_hammer_music.openFromFile(HAMMER_MUSIC))
+		std::cout << "Could not load hammer music file" << std::endl;
 }

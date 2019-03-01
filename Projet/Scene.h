@@ -20,6 +20,8 @@ class Scene
 		bool finished() const;
 		void setPause(bool);
 		void drawGameOver(sf::RenderWindow& window);
+		void loadHammerMusic();
+		void loadBGMMusic();
 
 	private:
 		void processPlayerInputs();
@@ -41,6 +43,8 @@ class Scene
 		SimpleObject m_peach;
 		BurningBarrel m_burningBarrel;
 		PhysicsManager m_manager;
+		sf::Music m_bgm_music;
+		sf::Music m_hammer_music;
 		bool m_lost = false;
 		bool m_won = false;
 		bool m_paused = false;

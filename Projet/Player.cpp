@@ -25,11 +25,13 @@ void Player::update()
 
 	if (m_hasHammer) {
 		if (clock.getElapsedTime().asSeconds() - elapsed.asSeconds() > HAMMER_DURATION) {
-			elapsed = clock.getElapsedTime();
+			elapsed = clock.restart();
 			setHammer(false);
 			setAnim();
 		}
 	}
+	else
+		elapsed = clock.restart();
 
 	Character::update();
 }

@@ -2,6 +2,7 @@
 #define PCH_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
@@ -23,6 +24,10 @@ const float BARREL_Y_DELTA = 0.08f;
 const sf::Vector2f FIRE_MONSTER_SPEED{ 1.f, 0.3f };
 const float FIRE_MONSTER_MAX_Y_SPEED = 1.0f;
 const float FIRE_MONSTER_Y_DELTA = 0.08f;
+
+//Music and sounds
+#define BGM_MUSIC "Stage1BGM.wav"
+#define HAMMER_MUSIC "HammerMusic.ogg"
 
 // Textures files
 #define MARIO_TEXTURE_FILE "mario_sprite9.png"
