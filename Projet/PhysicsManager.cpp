@@ -269,8 +269,8 @@ void PhysicsManager::manageDescent(Character* obj)
 	}
 	for ( SimpleObject* ppart : obj->getPlatform()->getParts() )
 	{
-		bool ownPPart = descendsRight && obj->x() >= ppart->x() && obj->xRight() <= ppart->xRight();
-		ownPPart = ownPPart || descendsLeft && obj->xRight() <= ppart->xRight() && obj->x() >= ppart->x();
+		bool ownPPart = descendsRight && obj->x() >= ppart->x() && obj->x() <= ppart->xRight();
+		ownPPart = ownPPart || descendsLeft && obj->xRight() <= ppart->xRight() && obj->xRight() >= ppart->x();
 		if ( ownPPart && obj->yBottom() + 1 < ppart->y() )
 			obj->setY(ppart->y() - obj->getSize().y );
 	}
